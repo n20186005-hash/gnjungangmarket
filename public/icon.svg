@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="강릉 중앙시장">
+  <rect width="512" height="512" fill="#174f42"/>
+  <g>
+    <rect x="116" y="150" width="280" height="44" rx="8" fill="#c94a36"/>
+    <rect x="116" y="206" width="280" height="44" rx="8" fill="#fffaf0"/>
+    <rect x="116" y="262" width="280" height="44" rx="8" fill="#e3ac3b"/>
+    <rect x="116" y="318" width="280" height="44" rx="8" fill="#fffaf0"/>
+  </g>
+  <circle cx="256" cy="256" r="92" fill="#e3ac3b"/>
+  <text x="256" y="296" font-family="'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif" font-size="104" font-weight="900" fill="#1c2824" text-anchor="middle">場</text>
+</svg>

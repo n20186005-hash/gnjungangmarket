@@ -1,0 +1,27 @@
+{
+  "name": "강릉 중앙시장 비공식 여행 가이드",
+  "short_name": "강릉중앙시장",
+  "description": "강원특별자치도 강릉시 금성로 21, 강릉 중앙시장을 위한 먹거리·교통·주차·주변 명소 한눈에 보기 가이드.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4eedf",
+  "theme_color": "#174f42",
+  "lang": "ko-KR",
+  "dir": "ltr",
+  "categories": ["travel", "food", "navigation"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

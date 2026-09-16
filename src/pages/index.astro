@@ -10,16 +10,22 @@ const place = {
   lng: 128.8986105,
   hours: '08:30–21:00',
   rating: 4.0,
+  reviewCount: 17088,
+  mapsShareUrl: 'https://maps.app.goo.gl/81cqUJsHeewA21wy9',
+  govtTourismUrl: 'https://www.gn.go.kr/www/contents.do?key=568',
 };
 
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
-const ogImageURL = Astro.site ? new URL('/brand/og-card.svg', Astro.site).toString() : undefined;
+const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://gnjungangmarket.com';
+const ogImageURL = `${siteBase}/brand/og-card.svg`;
 
 const marketSchema = {
   '@context': 'https://schema.org',
   '@type': ['LocalBusiness', 'TouristAttraction'],
+  '@id': `${siteBase}/#attraction`,
   name: place.name,
-  alternateName: place.alternateName,
+  alternateName: ['Gangneung Jungang Market', '강릉 중앙시장', 'Gangneung Central Market'],
+  description: '강릉 도심 한가운데에서 수산물, 농특산물, 생활잡화와 강릉 대표 먹거리를 만나는 전통시장. 점포별 영업시간은 다를 수 있습니다.',
   ...(canonicalURL ? { url: canonicalURL } : {}),
   telephone: '+82-33-648-2285',
   address: {
@@ -34,6 +40,7 @@ const marketSchema = {
     latitude: place.lat,
     longitude: place.lng,
   },
+  hasMap: place.mapsShareUrl,
   openingHoursSpecification: [{
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
@@ -43,10 +50,12 @@ const marketSchema = {
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: place.rating,
+    reviewCount: place.reviewCount,
     bestRating: 5,
   },
   isAccessibleForFree: true,
-  description: '강릉 도심 한가운데에서 수산물, 농특산물, 생활잡화와 강릉 대표 먹거리를 만나는 전통시장. 점포별 영업시간은 다를 수 있습니다.',
+  sameAs: [place.mapsShareUrl, place.govtTourismUrl],
+  image: [`${siteBase}/brand/og-card.svg`],
 };
 
 const faqs = [
@@ -102,8 +111,15 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
     <meta property="og:title" content="강릉 중앙시장 | 먹거리·교통·주차 한눈에 보기" />
     <meta property="og:description" content="강릉 도심의 전통시장, 중앙시장을 맛있고 편하게 걷기 위한 비공식 여행 가이드." />
     {canonicalURL && <meta property="og:url" content={canonicalURL} />}
-    {ogImageURL && <meta property="og:image" content={ogImageURL} />}
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content="강릉 중앙시장(강릉중앙시장) - 강릉시, 대한민국" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImageURL} />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="강릉중앙시장" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16.png" />
@@ -120,6 +136,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
       <nav class="hidden items-center gap-6 text-sm font-bold md:flex" aria-label="주요 메뉴">
         <a href="#taste" class="hover:text-[var(--chili)]">먹거리</a>
         <a href="#visit" class="hover:text-[var(--chili)]">방문정보</a>
+        <a href="#reviews" class="hover:text-[var(--chili)]">리뷰</a>
         <a href="#around" class="hover:text-[var(--chili)]">주변</a>
         <a href="#faq" class="hover:text-[var(--chili)]">FAQ</a>
       </nav>
@@ -141,7 +158,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
         <div class="relative order-1 md:order-2">
           <div class="absolute -right-8 -top-7 h-28 w-28 rounded-full border-[16px] border-[var(--mustard)] opacity-70" aria-hidden="true"></div>
           <figure class="photo-frame relative z-10 rotate-[1.5deg] overflow-hidden bg-white">
-            <img src={photo1} alt="강릉 중앙시장 외부 입구와 시장 간판" class="h-[54vh] min-h-[420px] w-full object-cover" fetchpriority="high" />
+            <img src={photo1} alt="강릉 중앙시장(강릉중앙시장) - 강릉시, 대한민국 외부 입구와 시장 간판" class="h-[54vh] min-h-[420px] w-full object-cover" fetchpriority="high" />
           </figure>
           <div class="absolute -bottom-5 -left-5 z-20 bg-[var(--chili)] px-5 py-4 text-sm font-black text-white shadow-xl -rotate-3">중앙시장 · 성남동</div>
         </div>
@@ -159,7 +176,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
       <section id="taste" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
         <div class="grid gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
           <div><p class="section-kicker">먹거리 장보기</p><h2 class="mt-3 max-w-xl text-5xl font-black tracking-[-.045em] md:text-7xl">무엇부터<br />먹을까?</h2><p class="mt-6 max-w-lg leading-7 text-black/65">하나의 ‘정답 맛집’보다 골목의 냄새와 줄, 갓 나온 음식의 표정을 보고 고르는 재미가 중앙시장의 방식입니다.</p></div>
-          <figure class="photo-frame overflow-hidden -rotate-1"><img src={photo3} alt="강릉 중앙시장에서 조리 중인 오징어순대와 시장 먹거리" class="h-[430px] w-full object-cover" loading="lazy" /></figure>
+          <figure class="photo-frame overflow-hidden -rotate-1"><img src={photo3} alt="강릉 중앙시장(강릉중앙시장)에서 조리 중인 오징어순대와 시장 먹거리" class="h-[430px] w-full object-cover" loading="lazy" /></figure>
         </div>
         <div class="mt-14 grid gap-px bg-[var(--line)] border border-[var(--line)] md:grid-cols-2 lg:grid-cols-3">
           {food.map(([name, desc], i) => <article class="group bg-[var(--cream)] p-7 transition hover:bg-white"><div class="mb-6 flex items-center justify-between"><span class="font-mono text-sm text-black/40">0{i+1}</span><span class="h-3 w-3 rounded-full bg-[var(--chili)] group-hover:bg-[var(--mustard)]"></span></div><h3 class="text-2xl font-black">{name}</h3><p class="mt-3 text-sm leading-6 text-black/60">{desc}</p></article>)}
@@ -175,7 +192,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
             <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">STAY</p><h3 class="mt-2 text-2xl font-black">1–2시간</h3><p class="mt-3 text-sm leading-6 text-black/60">식사와 월화거리 산책까지 묶으면 2–3시간을 추천.</p></article>
             <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">BEST TIME</p><h3 class="mt-2 text-2xl font-black">오전 · 늦은 오후</h3><p class="mt-3 text-sm leading-6 text-black/60">장보기는 오전~점심, 먹거리 분위기는 늦은 오후가 어울립니다.</p></article>
             <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">CONTACT</p><h3 class="mt-2 text-2xl font-black">033-648-2285</h3><p class="mt-3 text-sm leading-6 text-black/60">강릉 중앙시장 대표 문의 전화.</p></article>
-            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">RATING</p><h3 class="mt-2 text-2xl font-black">★ {place.rating.toFixed(1)} / 5</h3><p class="mt-3 text-sm leading-6 text-black/60">공개 지도 서비스 표시값은 시점에 따라 변동될 수 있습니다.</p></article>
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">RATING</p><h3 class="mt-2 text-2xl font-black">★ {place.rating.toFixed(1)} / 5</h3><p class="mt-3 text-sm leading-6 text-black/60">Google 지도 기준 <strong>{place.reviewCount.toLocaleString('ko-KR')}개</strong> 리뷰 · 평점과 리뷰 수는 Google 지도(Google Maps) 사용자 리뷰를 기준으로 2026년 9월에 동기화했습니다. <a href={place.mapsShareUrl} target="_blank" rel="noopener noreferrer">Google 지도에서 모든 리뷰 보기 ↗</a></p></article>
           </div>
         </div>
       </section>
@@ -202,7 +219,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
 
       <section class="overflow-hidden bg-[var(--ink)] text-white">
         <div class="mx-auto grid max-w-7xl lg:grid-cols-2">
-          <figure class="min-h-[460px]"><img src={photo2} alt="사람들이 오가는 강릉 중앙시장 실내 통로" class="h-full min-h-[460px] w-full object-cover" loading="lazy" /></figure>
+          <figure class="min-h-[460px]"><img src={photo2} alt="강릉 중앙시장(강릉중앙시장) 실내 통로를 오가는 사람들" class="h-full min-h-[460px] w-full object-cover" loading="lazy" /></figure>
           <div class="flex flex-col justify-center px-6 py-16 md:px-14 lg:py-20"><p class="section-kicker !text-[var(--mustard)]">시장 걷는 법</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">빨리 사기보다<br />천천히 고르기</h2><div class="mt-8 grid gap-6 text-sm leading-7 text-white/70 sm:grid-cols-2"><p><strong class="block text-white">① 지하부터</strong>수산물과 회센터를 먼저 보고 올라오면 시장의 ‘바다 쪽 얼굴’을 빠르게 이해할 수 있습니다.</p><p><strong class="block text-white">② 한 손은 비워두기</strong>간식 포장과 장바구니가 금방 늘어납니다. 큰 짐은 숙소나 차량에 두고 오는 편이 좋습니다.</p><p><strong class="block text-white">③ 골목도 코스</strong>시장 안만 보지 말고 월화거리와 구도심 역사 공간을 함께 걸으면 강릉의 시간층이 더 잘 보입니다.</p><p><strong class="block text-white">④ 인기 줄은 분산</strong>주말과 식사 시간에는 유명 먹거리 앞 대기가 길어질 수 있어, 한 곳에만 목적을 두기보다 비슷한 메뉴를 비교해 보세요.</p></div></div>
         </div>
       </section>
@@ -223,10 +240,47 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
         </div>
       </section>
 
+      <section id="reviews" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+          <div>
+            <p class="section-kicker">리뷰 · 평점</p>
+            <h2 class="mt-3 text-5xl font-black tracking-[-.04em]">방문객들이 남긴 평점</h2>
+            <div class="mt-8 flex items-end gap-5">
+              <span class="text-7xl font-black text-[var(--pine)]">{place.rating.toFixed(1)}</span>
+              <div>
+                <p class="text-2xl font-black text-[var(--mustard)]" aria-hidden="true">★★★★☆</p>
+                <p class="mt-1 text-sm font-bold text-black/70">Google 지도 리뷰 {place.reviewCount.toLocaleString('ko-KR')}개</p>
+              </div>
+            </div>
+            <p class="mt-6 max-w-xl text-xs leading-5 text-black/55">평점과 리뷰 수는 Google 지도(Google Maps) 사용자 리뷰를 기준으로 2026년 9월에 동기화했습니다. 실제 표시값은 시점에 따라 변동될 수 있습니다.</p>
+            <a href={place.mapsShareUrl} target="_blank" rel="noopener noreferrer" class="stamp mt-7 inline-block bg-[var(--pine)] px-5 py-3 text-sm font-black text-white no-underline">Google 지도에서 모든 리뷰 보기 ↗</a>
+          </div>
+          <div class="rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-8">
+            <p class="text-xs font-black uppercase tracking-[.2em] text-[var(--chili)]">Source note</p>
+            <p class="mt-4 text-sm leading-7 text-black/70">본 평점·리뷰 요약은 <strong>Google 지도 사용자 리뷰</strong>에서 동기화되었으며, 동기화 시점은 <strong>2026년 9월</strong>입니다. 저작권은 원작자와 Google 지도에 있습니다.</p>
+            <p class="mt-4 text-xs leading-5 text-black/50">개별 리뷰와 평점은 아래 버튼의 Google 지도 전체 보기에서 확인할 수 있습니다.</p>
+            <a href={place.mapsShareUrl} target="_blank" rel="noopener noreferrer" class="mt-6 inline-block border-2 border-[var(--pine)] px-4 py-2 text-sm font-bold text-[var(--pine)] no-underline transition hover:bg-[var(--pine)] hover:text-white">Google 지도에서 모든 리뷰 보기</a>
+          </div>
+        </div>
+      </section>
+
       <section id="faq" class="mx-auto max-w-5xl px-5 py-20 md:px-8 md:py-28">
         <div class="text-center"><p class="section-kicker">FAQ</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">자주 묻는 질문</h2></div>
         <div class="mt-12 divide-y-2 divide-[var(--ink)] border-y-2 border-[var(--ink)]">
           {faqs.map(([q, a], i) => <details class="group py-6"><summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-black"><span><span class="mr-3 text-[var(--chili)]">{String(i+1).padStart(2,'0')}</span>{q}</span><span class="text-2xl transition group-open:rotate-45">＋</span></summary><p class="max-w-3xl pt-4 pl-10 text-sm leading-7 text-black/65">{a}</p></details>)}
+        </div>
+      </section>
+
+      <section class="border-t-2 border-[var(--line)] bg-[var(--paper-deep)] px-5 py-16 md:px-8">
+        <div class="mx-auto max-w-7xl">
+          <p class="section-kicker">자료 출처</p>
+          <h2 class="mt-3 text-3xl font-black tracking-[-.03em]">정보 출처와 저작권</h2>
+          <ul class="mt-8 grid gap-4 text-sm leading-7 md:grid-cols-2">
+            <li class="border-l-4 border-[var(--pine)] bg-[var(--cream)] p-5"><strong class="block font-black">리뷰 · 평점</strong>Google 지도(Google Maps) 사용자 리뷰에서 2026년 9월에 동기화. 저작권은 원작자와 Google 지도에 있습니다. <a href={place.mapsShareUrl} target="_blank" rel="noopener noreferrer">Google 지도에서 모든 리뷰 보기 ↗</a></li>
+            <li class="border-l-4 border-[var(--mustard)] bg-[var(--cream)] p-5"><strong class="block font-black">시장 안내</strong>강릉시 중앙시장 안내(<a href={place.govtTourismUrl} target="_blank" rel="noopener noreferrer">gn.go.kr</a>)</li>
+            <li class="border-l-4 border-[var(--chili)] bg-[var(--cream)] p-5"><strong class="block font-black">교통 · 주차</strong>강릉시 교통정보(<a href="https://its.gn.go.kr/" target="_blank" rel="noopener noreferrer">its.gn.go.kr</a>)</li>
+            <li class="border-l-4 border-[var(--sea)] bg-[var(--cream)] p-5"><strong class="block font-black">사진</strong>Wikimedia Commons(Grapesurgeon, Mobius6 / CC BY-SA 4.0)</li>
+          </ul>
         </div>
       </section>
     </main>
@@ -269,6 +323,11 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
       document.getElementById('cookie-accept')?.addEventListener('click', () => { localStorage.setItem(consentKey,'yes'); banner?.classList.add('hidden'); loadGA(); });
       document.getElementById('cookie-reject')?.addEventListener('click', () => { localStorage.setItem(consentKey,'no'); banner?.classList.add('hidden'); });
       document.getElementById('cookie-settings')?.addEventListener('click', () => banner?.classList.remove('hidden'));
+    </script>
+    <script>
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      }
     </script>
   </body>
 </html>
