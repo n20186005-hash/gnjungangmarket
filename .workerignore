@@ -1,0 +1,28 @@
+# When manually deploying to Cloudflare Workers, only these are needed:
+#   - dist/        (static Astro build, uploaded as Worker Assets)
+#   - worker/      (the Worker script that serves assets + /api/weather)
+# Everything else below is source / tooling and should NOT be uploaded.
+
+node_modules/
+src/
+.astro/
+.wrangler/
+.git/
+.gitignore
+.workerignore
+*.log
+build*.log
+inst*.log
+install*.log
+SELF_CHECK_RUN.log
+README.md
+DOMAIN_SUGGESTIONS.md
+SELF_CHECK.md
+scripts/
+pnpm-lock.yaml
+pnpm-workspace.yaml
+package.json
+package-lock.json
+tsconfig.json
+astro.config.mjs
+public/

@@ -34,13 +34,15 @@ pnpm build
 
 ## Cloudflare Workers 배포
 
-이 프로젝트는 정적 Astro 결과물(`dist/`)을 Cloudflare Workers Static Assets로 배포합니다.
+이 프로젝트는 정적 Astro 결과물(`dist/`)을 Cloudflare Workers로 배포합니다.
 
 ```bash
 pnpm deploy
 ```
 
-`wrangler.jsonc`에 Worker 이름과 assets 디렉터리가 구성되어 있습니다.
+- `worker/index.js`가 Worker 진입점(`main`)이며, 정적 자산은 `ASSETS` 바인딩으로 제공합니다.
+- `GET /api/weather` 요청은 Worker가 서버 사이드에서 기상 데이터를 받아 엣지에 캐시한 뒤 동일 출처로 응답합니다. 브라우저는 업스트림 엔드포인트나 제공처를 직접 알지 못합니다.
+- `wrangler.jsonc`에 Worker 이름, `main`, `assets`(directory + binding)이 구성되어 있습니다.
 
 ## 정보 출처
 
@@ -48,6 +50,7 @@ pnpm deploy
 - 강릉시 교통정보 주차장 안내: https://its.gn.go.kr/
 - 대한민국 구석구석(한국관광공사) 강릉 중앙시장 안내
 - Google Maps 위치 좌표: 37.7539884, 128.8986105
+- 실시간 날씨: 서버 사이드 프록시(`worker/index.js` → `/api/weather`)로 제공됩니다. 키가 필요 없는 공개 기상 데이터를 엣지 캐시하여 안정적으로 응답합니다.
 - 실제 사진 출처/라이선스: `public/images/PHOTO_SOURCES.md`
 
 시장 점포의 영업시간, 메뉴 가격, 휴무, 주차 요금/운영 상태는 변동 가능성이 있어 현장 확인을 권장합니다.

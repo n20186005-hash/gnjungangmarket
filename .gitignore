@@ -1,7 +1,22 @@
+# Dependencies & build output
 node_modules/
 dist/
 .astro/
 .wrangler/
-.DS_Store
+
+# Local env
 .env
 .env.*
+
+# Logs (build / install / self-check artifacts)
+*.log
+build*.log
+inst*.log
+install*.log
+SELF_CHECK_RUN.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

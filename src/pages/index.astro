@@ -93,6 +93,79 @@ const nearby = [
   ['오죽헌', '신사임당과 율곡 이이의 삶과 연결된 강릉의 대표 문화유산. 시장에서 식사한 뒤 이어 가기 좋은 반나절 코스입니다.'],
 ];
 
+// 방문 편의 시설 — 점포·업체 이름은 추천하지 않고 ‘유형’ 중심으로 중립 서술합니다.
+const facilities = [
+  { icon: '🚻', title: '화장실', desc: '시장 주변에 공영 화장실과 상인회가 운영하는 시장 내 화장실이 있습니다. 위치는 현장 안내표지를 따르세요.' },
+  { icon: '🅿️', title: '주차', desc: '남대천 둔치·타워형·월화거리 노상 등 공영주차장과 민영 주차장이 함께 있습니다. 요금과 잔여 면수는 현장 표지판을 확인하세요.' },
+  { icon: '🍜', title: '식사·먹거리', desc: '국밥·분식·회·간식 등 다양한 형태의 식사 점포가 모여 있습니다. 특정 메뉴는 점포마다 영업시간이 다릅니다.' },
+  { icon: '🛏️', title: '숙박', desc: '시장 인근 도보·차량 이동 거리에 모텔, 호텔, 게스트하우스 등 여러 형태의 숙박이 있습니다. 성수기 예약을 권장합니다.' },
+  { icon: '🛒', title: '마트·편의점', desc: '대형마트와 편의점, 약국 등 생필품 구매 시설이 시내 곳곳에 있습니다. 장보기 전후 활용하기 좋습니다.' },
+  { icon: '⛽', title: '주유·충전', desc: '도심 주요 도로변에 주유소와 전기차 충전소가 있습니다. 장거리 이동 전 미리 충전 상태를 확인하세요.' },
+];
+
+// 오시는 길 — 교통 수단별 상세 동선
+const transportModes = [
+  {
+    icon: '✈️',
+    title: '공항에서',
+    summary: '가까운 양양국제공항 기준, 원거리 공항은 서울 경유 KTX 이용',
+    steps: [
+      '양양국제공항 도착 후 시외·시내버스 환승 또는 택시로 강릉 시내 이동(공항버스 약 1시간 내외, 택시 약 40~50분).',
+      '인천·김포 등 원거리 공항에서는 공항철도·버스로 서울 경유 후 KTX 강릉행 승차, 강릉역에서 환승.',
+      '강릉 시내 도착 후 시내버스 또는 택시로 중앙시장(금성로 21) 이동.',
+    ],
+  },
+  {
+    icon: '🚄',
+    title: '기차(KTX)에서',
+    summary: '강릉역 하차 후 버스 또는 택시로 약 2km',
+    steps: [
+      'KTX·청량리~강릉 누리로 등으로 강릉역 하차.',
+      '시내버스(관광 안내 기준 206번 등) 이용 시 신영극장 정류장 하차 후 도보 약 5분.',
+      '짐이 많거나 편할 때는 강릉역 앞 택시 이용(중앙시장까지 약 10분).',
+    ],
+  },
+  {
+    icon: '🚌',
+    title: '버스터미널에서',
+    summary: '강릉버스터미널 하차 후 시내버스·택시',
+    steps: [
+      '고속·시외버스로 강릉버스터미널 하차(터미널에서 중앙시장까지 약 2~3km).',
+      '시내버스 환승 또는 택시 이용으로 금성로 일대 하차.',
+      '터미널 인근에는 대중교통 환승 안내가 갖춰져 있어 현장 표지를 따라 이동하세요.',
+    ],
+  },
+  {
+    icon: '🚕',
+    title: '택시 이용',
+    summary: '강릉역·터미널·공항에서 중앙시장 직행',
+    steps: [
+      '강릉역·버스터미널·양양공항에서 택시 이용 시 중앙시장까지 기본 요금 수준~약 2km 구간.',
+      '교통 상황에 따라 10~15분 내외, 성수기·퇴근 시간에는 대기 가능.',
+      '목적지는 ‘중앙시장(금성로)’ 또는 ‘월화거리’로 말씀하시면 가까운 곳에 내려줍니다.',
+    ],
+  },
+];
+
+// 계절별 방문 전략 (강릉 기후 평년값 기준的一般 안내)
+const seasonRows = [
+  { season: '봄 · 3–5월', weather: '일교차 크고 건조, 늦은 3~4월 벚꽃, 황사 가능', food: '주꾸미·갓김치·봄나물·굴', tip: '겉옷 챙기기, 주말 벚꽃 인파', crowd: '중간' },
+  { season: '여름 · 6–8월', weather: '무덥고 습함, 장마(6말~7월), 태풍(8~9월)', food: '닭강정·냉면·아이스·회', tip: '더위·소나기 대비, 실내 점포 활용', crowd: '높음(휴가철)' },
+  { season: '가을 · 9–11월', weather: '가장 쾌적하고 건조, 단풍, 일교차', food: '육쪽마늘·전어·밤·대게(철)', tip: '방문 최적기, 겉옷 준비', crowd: '중간~높음(추석 전후)' },
+  { season: '겨울 · 12–2월', weather: '춥고 강설 잦음(동해 영향), 강풍', food: '소머리국밥·옹심이·북어국', tip: '방한·미끄럼 주의, 폭설 시 교통 확인', crowd: '낮음(연휴 제외)' },
+];
+
+// 추천 코스
+const generalRoutes = [
+  { title: '반일 코스 · 2–3시간', desc: 'B1 수산·회센터 → 1F 먹거리 골목 → 월화거리 산책. 시장의 ‘바다 쪽 얼굴’과 골목 먹거리를 가볍게 둘러봅니다.' },
+  { title: '종일 코스 · 반나절+', desc: '중앙시장 장보기 → 임영관 삼문 → 강릉대도호부 관아 → 오죽헌(택시·버스 환승). 구도심 역사 동선을 하루에 묶습니다.' },
+];
+const audienceRoutes = [
+  { icon: '👨‍👩‍👧', title: '아이 동반 가족', desc: '평지 위주 동선, 먹거리 시식 위주, 월화거리 산책, 화장실 위치 미리 확인. 무거운 유모차는 골목이 좁으니 접이식 권장.' },
+  { icon: '📷', title: '사진·자연 즐기기', desc: '이른 아침 부드러운 빛, 월화거리 건축과 시장 아케이드, 임영관 삼문 담장. 사람이 적은 오전이 촬영에 유리합니다.' },
+  { icon: '♿', title: '저체력·무장애', desc: '동선을 짧게, 벤치와 화장실을 자주 활용, 실내 점포 중심, 공영주차장과 가까운 입구 이용. 경사·계단 구간이 있으니 여유 있게.' },
+];
+
 const photo1 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Gangneung_Jungang_Market_01.jpg/960px-Gangneung_Jungang_Market_01.jpg';
 const photo2 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Gangneung_Jungang_Market_02.jpg/960px-Gangneung_Jungang_Market_02.jpg';
 const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangneung_Jungang_Market_20220501_003.jpg/960px-Gangneung_Jungang_Market_20220501_003.jpg';
@@ -136,6 +209,11 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
       <nav class="hidden items-center gap-6 text-sm font-bold md:flex" aria-label="주요 메뉴">
         <a href="#taste" class="hover:text-[var(--chili)]">먹거리</a>
         <a href="#visit" class="hover:text-[var(--chili)]">방문정보</a>
+        <a href="#transport" class="hover:text-[var(--chili)]">교통</a>
+        <a href="#weather" class="hover:text-[var(--chili)]">날씨</a>
+        <a href="#season" class="hover:text-[var(--chili)]">계절</a>
+        <a href="#routes" class="hover:text-[var(--chili)]">코스</a>
+        <a href="#story" class="hover:text-[var(--chili)]">이야기</a>
         <a href="#reviews" class="hover:text-[var(--chili)]">리뷰</a>
         <a href="#around" class="hover:text-[var(--chili)]">주변</a>
         <a href="#faq" class="hover:text-[var(--chili)]">FAQ</a>
@@ -158,7 +236,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
         <div class="relative order-1 md:order-2">
           <div class="absolute -right-8 -top-7 h-28 w-28 rounded-full border-[16px] border-[var(--mustard)] opacity-70" aria-hidden="true"></div>
           <figure class="photo-frame relative z-10 rotate-[1.5deg] overflow-hidden bg-white">
-            <img src={photo1} alt="강릉 중앙시장(강릉중앙시장) - 강릉시, 대한민국 외부 입구와 시장 간판" class="h-[54vh] min-h-[420px] w-full object-cover" fetchpriority="high" />
+            <img src={photo1} alt="강릉 중앙시장(강릉중앙시장) - 강릉시, 대한민국 외부 입구와 시장 간판" class="h-[54vh] min-h-[420px] w-full object-cover" />
           </figure>
           <div class="absolute -bottom-5 -left-5 z-20 bg-[var(--chili)] px-5 py-4 text-sm font-black text-white shadow-xl -rotate-3">중앙시장 · 성남동</div>
         </div>
@@ -197,22 +275,31 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
         </div>
       </section>
 
-      <section class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
-        <div class="grid gap-12 lg:grid-cols-2">
+      <section id="transport" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"><div><p class="section-kicker">오시는 길</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">교통 상세 안내</h2></div><p class="max-w-lg text-sm leading-6 text-black/60">강릉 중앙시장(금성로 21)은 강릉역·버스터미널·양양공항에서 모두 대중교통·택시로 연결됩니다. 아래는 수단별 대표 동선이며, 실시간 배차와 요금은 현장 안내를 우선하세요.</p></div>
+        <div class="mt-12 grid gap-5 md:grid-cols-2">
+          {transportModes.map((m, i) => (
+            <article class="ticket relative p-7">
+              <div class="flex items-center gap-3"><span class="text-3xl">{m.icon}</span><div><p class="text-xs font-black text-[var(--chili)]">ROUTE 0{i+1}</p><h3 class="text-2xl font-black">{m.title}</h3></div></div>
+              <p class="mt-3 text-sm font-bold text-black/70">{m.summary}</p>
+              <ol class="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-black/60">{m.steps.map((s) => <li>{s}</li>)}</ol>
+            </article>
+          ))}
+        </div>
+        <div class="mt-10 overflow-hidden border-2 border-[var(--ink)] bg-[var(--cream)]">
+          <div class="bg-[var(--pine)] px-5 py-3 text-sm font-black text-white">주차 요령 · 골목 밖에 차를 두고</div>
           <div>
-            <p class="section-kicker">상세 교통</p><h2 class="mt-3 text-4xl font-black">강릉역에서 시장까지</h2>
-            <ol class="mt-8 space-y-0 border-l-2 border-[var(--pine)]">
-              <li class="relative pl-8 pb-8"><span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-[var(--pine)] ring-4 ring-[var(--paper)]"></span><h3 class="font-black">KTX 강릉역 출발</h3><p class="mt-2 text-sm leading-6 text-black/60">중앙시장까지 약 2km. 짐이 많다면 택시가 가장 단순하고, 도심을 천천히 보고 싶다면 버스나 도보 동선을 선택할 수 있습니다.</p></li>
-              <li class="relative pl-8 pb-8"><span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-[var(--mustard)] ring-4 ring-[var(--paper)]"></span><h3 class="font-black">버스 이용</h3><p class="mt-2 text-sm leading-6 text-black/60">관광 안내에는 206번 버스로 신영극장 정류장 하차 후 약 5분 걷는 경로가 소개됩니다. 현장에서는 실시간 버스 정보를 함께 확인하세요.</p></li>
-              <li class="relative pl-8"><span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-[var(--chili)] ring-4 ring-[var(--paper)]"></span><h3 class="font-black">시장 도착</h3><p class="mt-2 text-sm leading-6 text-black/60">금성로·중앙시장길 일대에서 보행자가 많아집니다. 자동차로 접근한다면 먼저 공영주차장에 주차하고 골목은 걸어서 보는 편이 편합니다.</p></li>
-            </ol>
+            {['중앙시장 제1공영주차장 · 남대천 둔치','중앙시장 제2공영주차장 · 타워형','중앙시장 제3공영주차장 · 월화거리 노상','금성로 노상주차장','성내동 광장 공영주차장'].map((p, i) => <div class="flex items-center gap-4 border-b border-black/15 px-5 py-4 last:border-b-0"><span class="grid h-8 w-8 shrink-0 place-items-center bg-[var(--pine)] text-xs font-black text-white">P{i+1}</span><span class="font-bold">{p}</span></div>)}
           </div>
-          <div>
-            <p class="section-kicker">주차 정보</p><h2 class="mt-3 text-4xl font-black">차는 골목 밖에 두고</h2>
-            <div class="mt-8 overflow-hidden border-2 border-[var(--ink)] bg-[var(--cream)]">
-              {['중앙시장 제1공영주차장 · 남대천 둔치','중앙시장 제2공영주차장 · 타워형','중앙시장 제3공영주차장 · 월화거리 노상','금성로 노상주차장','성내동 광장 공영주차장'].map((p, i) => <div class="flex items-center gap-4 border-b border-black/15 px-5 py-4 last:border-b-0"><span class="grid h-8 w-8 shrink-0 place-items-center bg-[var(--pine)] text-xs font-black text-white">P{i+1}</span><span class="font-bold">{p}</span></div>)}
-            </div>
-            <p class="mt-4 text-xs leading-5 text-black/55">주차장 요금·운영 방식·잔여 면수는 행사와 운영 상황에 따라 달라질 수 있습니다. 강릉시 교통정보 또는 현장 표지판을 기준으로 확인하세요.</p>
+        </div>
+        <p class="mt-4 text-xs leading-5 text-black/55">주차장 요금·운영 방식·잔여 면수는 행사와 운영 상황에 따라 달라질 수 있습니다. 강릉시 교통정보(<a href="https://its.gn.go.kr/" target="_blank" rel="noopener noreferrer">its.gn.go.kr</a>) 또는 현장 표지판을 기준으로 확인하세요.</p>
+      </section>
+
+      <section id="facilities" class="bg-[var(--paper-deep)] py-20 md:py-28">
+        <div class="mx-auto max-w-7xl px-5 md:px-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"><div><p class="section-kicker">방문 편의 정보</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">화장실·주차·숙박, 무엇이 있나요</h2></div><p class="max-w-lg text-sm leading-6 text-black/60">비영리 안내 페이지로서 특정 업체·점포를 추천하지 않고, 시장 인근에서 이용할 수 있는 <strong>시설 유형</strong>을 중립적으로 정리합니다. 실제 위치와 운영 상태는 현장 안내를 확인하세요.</p></div>
+          <div class="mt-12 grid gap-px bg-[var(--line)] border border-[var(--line)] md:grid-cols-2 lg:grid-cols-3">
+            {facilities.map((f) => <article class="bg-[var(--cream)] p-7"><div class="mb-4 flex items-center gap-3"><span class="text-3xl">{f.icon}</span><h3 class="text-2xl font-black">{f.title}</h3></div><p class="text-sm leading-6 text-black/60">{f.desc}</p></article>)}
           </div>
         </div>
       </section>
@@ -238,6 +325,101 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
             <iframe title="강릉 중앙시장 Google 지도" src="https://www.google.com/maps?q=37.7539884,128.8986105&hl=ko&z=17&output=embed" class="h-[520px] w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
+      </section>
+
+      <section id="weather" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <p class="section-kicker">날씨 · 실시간</p>
+        <h2 class="mt-3 text-5xl font-black tracking-[-.04em]">강릉 중앙시장 날씨</h2>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-black/60">방문 당일의 옷차림과 놀이 팁을 날씨 데이터로 안내합니다. 아래 추천은 자동으로 계산되므로 그대로 따르실 필요는 없습니다.</p>
+
+        <div class="mt-10 grid gap-6 lg:grid-cols-[1.05fr_1.4fr]">
+          <div class="rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-7">
+            <p class="text-xs font-black uppercase tracking-[.2em] text-[var(--chili)]">지금</p>
+            <div id="wx-now" class="mt-4 text-sm text-black/60">날씨를 불러오는 중…</div>
+          </div>
+          <div class="rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-7">
+            <p class="text-xs font-black uppercase tracking-[.2em] text-[var(--sea)]">7일 예보</p>
+            <div id="wx-7d" class="mt-4 text-sm text-black/60">예보를 불러오는 중…</div>
+          </div>
+        </div>
+
+        <div id="wx-advice" class="mt-8 hidden"></div>
+        <p id="wx-updated" class="mt-3 text-xs text-black/45"></p>
+      </section>
+
+      <section id="season" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div><p class="section-kicker">계절별 방문 전략</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">봄·여름·가을·겨울, 언제 가면 좋을까</h2></div>
+        <p class="mt-6 max-w-2xl text-sm leading-6 text-black/60">강릉은 동해 영향으로 겨울 눈이 많고, 여름 장마·태풍, 가을이 가장 쾌적합니다. 아래는 계절별 기후와 철 먹거리·방문 팁을 정리한 참고 표입니다(기후 수치는 일반적인 평년 경향 안내).</p>
+        <div class="mt-10 overflow-x-auto">
+          <table class="w-full min-w-[640px] border-collapse text-sm">
+            <thead><tr class="bg-[var(--pine)] text-white"><th class="p-4 text-left">계절</th><th class="p-4 text-left">날씨·기온</th><th class="p-4 text-left">철 먹거리</th><th class="p-4 text-left">방문 팁</th><th class="p-4 text-left">혼잡도</th></tr></thead>
+            <tbody class="divide-y divide-[var(--line)]">
+              {seasonRows.map((r) => (
+                <tr class="bg-[var(--cream)]">
+                  <td class="p-4 align-top font-black">{r.season}</td>
+                  <td class="p-4 align-top text-black/70">{r.weather}</td>
+                  <td class="p-4 align-top text-black/70">{r.food}</td>
+                  <td class="p-4 align-top text-black/70">{r.tip}</td>
+                  <td class="p-4 align-top font-bold">{r.crowd}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="routes" class="bg-[var(--paper-deep)] py-20 md:py-28">
+        <div class="mx-auto max-w-7xl px-5 md:px-8">
+          <div><p class="section-kicker">추천 코스</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">시간과 동행에 맞는 코스</h2></div>
+          <p class="mt-6 max-w-2xl text-sm leading-6 text-black/60">일정과 동행 구성을 바꿔보세요. 아래는 일반 추천 코스와 동행 유형별 맞춤 동선입니다.</p>
+          <div class="mt-12 grid gap-5 md:grid-cols-2">
+            {generalRoutes.map((r, i) => <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">GENERAL 0{i+1}</p><h3 class="mt-2 text-2xl font-black">{r.title}</h3><p class="mt-3 text-sm leading-6 text-black/60">{r.desc}</p></article>)}
+          </div>
+          <h3 class="mt-14 text-2xl font-black">동행별 맞춤 코스</h3>
+          <div class="mt-6 grid gap-5 md:grid-cols-3">
+            {audienceRoutes.map((r) => <article class="border-t-4 border-[var(--sea)] bg-[var(--cream)] p-7"><div class="flex items-center gap-3"><span class="text-3xl">{r.icon}</span><h4 class="text-xl font-black">{r.title}</h4></div><p class="mt-4 text-sm leading-7 text-black/60">{r.desc}</p></article>)}
+          </div>
+        </div>
+      </section>
+
+      <section id="story" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div><p class="section-kicker">시장 이해하기</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">골목 뒤에 숨은 강릉의 이야기</h2></div>
+        <p class="mt-6 max-w-2xl text-sm leading-6 text-black/60">비영리 안내 페이지로서 시장의 역사·먹거리 문화·기후와 방문 예절을 객관적으로 정리했습니다. 정확한 연혁과 수치는 강릉시 및 문화관광형시장 안내를 참고하세요.</p>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-2">
+          <article class="rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-8">
+            <h3 class="text-2xl font-black">역사와 배경</h3>
+            <p class="mt-4 text-sm leading-7 text-black/65">강릉 중앙시장은 강릉 구도심의 오래된 상권 가운데 하나로, 생활 잡화와 수산물·농특산물이 한데 모인 전통시장입니다. 문화관광형시장으로 꼽히며, 철도가 지하화되면서 조성된 <strong>월화거리</strong>와 길을 이어 걸을 수 있습니다. 강릉의 대표 축제인 <strong>강릉단오제</strong>(유네스코 인류무형문화유산) 기간에는 시장 일대가 더욱 활기를 띱니다.</p>
+          </article>
+          <article class="rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-8">
+            <h3 class="text-2xl font-black">먹거리 문화와 과학</h3>
+            <p class="mt-4 text-sm leading-7 text-black/65">강릉을 대표하는 <strong>육쪽마늘</strong>은 일반 마늘보다 잎이 6갈래로 갈라지는 품종으로, 지역 특산으로 자리잡았습니다. 감자가 많은 강원도 기후에서 유래한 <strong>옹심이(감자 둥근 만두)</strong>, 군것질 문화가 담긴 <strong>닭강정</strong>처럼 시장 먹거리는 이 지역의 농수산물과 기후가 만든 결과입니다.</p>
+          </article>
+        </div>
+
+        <article class="mt-6 rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-8">
+          <h3 class="text-2xl font-black">강릉의 기후를 과학적으로 읽기</h3>
+          <p class="mt-4 text-sm leading-7 text-black/65">강릉은 동해안에 자리잡아 내륙보다 겨울 눈이 많고 기온이 높은 해양성 영향권입니다. 여름에는 장마전선, 가을에는 이동성 고기압의 영향으로 맑은 날이 잦습니다. 이런 30년 평년 경향(기상청 평년값 기준 일반 안내)이 수산물·농특산물 유통과 시장 먹거리의 계절을 만듭니다.</p>
+          <ul class="mt-5 grid gap-3 text-sm leading-6 text-black/70 sm:grid-cols-2">
+            <li class="border-l-4 border-[var(--sea)] pl-4">겨울: 동해 영향으로 폭설·강풍 잦음 → 방한·미끄럼 대비</li>
+            <li class="border-l-4 border-[var(--sea)] pl-4">여름: 장마·태풍 → 소나기와 더위 대비, 실내 점포 활용</li>
+            <li class="border-l-4 border-[var(--mustard)] pl-4">봄: 일교차·황사 → 겉옷과 마스크 준비</li>
+            <li class="border-l-4 border-[var(--mustard)] pl-4">가을: 가장 안정적·쾌적 → 방문 최적기</li>
+          </ul>
+        </article>
+
+        <article class="mt-6 rounded-2xl border-2 border-[var(--ink)] bg-[var(--cream)] p-8">
+          <h3 class="text-2xl font-black">방문객 책임과 예절</h3>
+          <p class="mt-4 text-sm leading-7 text-black/65">전통시장은 지역 상권의 중심입니다. 작은 배려가 시장을 지킵니다.</p>
+          <ul class="mt-5 grid gap-3 text-sm leading-6 text-black/70 md:grid-cols-2">
+            <li class="border-l-4 border-[var(--pine)] pl-4">쓰레기는 분리배출하고 자리에 두고 가지 않기</li>
+            <li class="border-l-4 border-[var(--pine)] pl-4">현금과 카드 모두 준비(소액 결제 대비)</li>
+            <li class="border-l-4 border-[var(--pine)] pl-4">회 등 날것은 개인 알레르기·상태 확인 후 섭취</li>
+            <li class="border-l-4 border-[var(--pine)] pl-4">주차는 공영주차장 이용, 보행자 배려</li>
+            <li class="border-l-4 border-[var(--pine)] pl-4">상인과 예의 있는 거래, 흥정은 신중히</li>
+            <li class="border-l-4 border-[var(--pine)] pl-4">사진 촬영 시 상인·방문객 동의와 프라이버시 배려</li>
+          </ul>
+        </article>
       </section>
 
       <section id="reviews" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
@@ -280,6 +462,7 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
             <li class="border-l-4 border-[var(--mustard)] bg-[var(--cream)] p-5"><strong class="block font-black">시장 안내</strong>강릉시 중앙시장 안내(<a href={place.govtTourismUrl} target="_blank" rel="noopener noreferrer">gn.go.kr</a>)</li>
             <li class="border-l-4 border-[var(--chili)] bg-[var(--cream)] p-5"><strong class="block font-black">교통 · 주차</strong>강릉시 교통정보(<a href="https://its.gn.go.kr/" target="_blank" rel="noopener noreferrer">its.gn.go.kr</a>)</li>
             <li class="border-l-4 border-[var(--sea)] bg-[var(--cream)] p-5"><strong class="block font-black">사진</strong>Wikimedia Commons(Grapesurgeon, Mobius6 / CC BY-SA 4.0)</li>
+            <li class="border-l-4 border-[var(--pine)] bg-[var(--cream)] p-5"><strong class="block font-black">날씨 정보</strong>실시간 기상 관측 자료를 바탕으로 한 예보이며, 같은 날씨라도 체감과 현장 상황은 다를 수 있습니다. 방문 전 날씨와 교통 상황을 함께 확인하세요.</li>
           </ul>
         </div>
       </section>
@@ -325,9 +508,149 @@ const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangne
       document.getElementById('cookie-settings')?.addEventListener('click', () => banner?.classList.remove('hidden'));
     </script>
     <script>
-      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+      if ((import.meta as any).env?.PROD && 'serviceWorker' in navigator) {
         window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
       }
+    </script>
+    <script>
+      // @ts-nocheck
+      (() => {
+        const nowEl = document.getElementById('wx-now');
+        const d7El = document.getElementById('wx-7d');
+        const advEl = document.getElementById('wx-advice');
+        const updEl = document.getElementById('wx-updated');
+        if (!nowEl || !d7El) return;
+
+        const WMO = {
+          0:['맑음','☀️'], 1:['대체로 맑음','🌤️'], 2:['구름 조금','⛅'], 3:['흐림','☁️'],
+          45:['안개','🌫️'], 48:['짙은 안개','🌫️'],
+          51:['이슬비','🌦️'], 53:['이슬비','🌦️'], 55:['이슬비','🌦️'],
+          56:['어는 이슬비','🌧️'], 57:['어는 이슬비','🌧️'],
+          61:['약한 비','🌦️'], 63:['비','🌧️'], 65:['강한 비','🌧️'],
+          66:['어는 비','🌧️'], 67:['어는 비','🌧️'],
+          71:['약한 눈','🌨️'], 73:['눈','❄️'], 75:['강한 눈','❄️'], 77:['싸락눈','🌨️'],
+          80:['소나기','🌦️'], 81:['소나기','🌧️'], 82:['강한 소나기','⛈️'],
+          85:['눈 소나기','🌨️'], 86:['눈 소나기','❄️'],
+          95:['뇌우','⛈️'], 96:['우박 동반 뇌우','⛈️'], 99:['우박 동반 뇌우','⛈️'],
+        };
+        function wmo(code){
+          const [label, emoji] = WMO[code] || ['알 수 없음','🌡️'];
+          return {
+            label, emoji,
+            isLightRain: [51,53,55,61,80].includes(code),
+            isHeavyRain: [65,82,66,67].includes(code),
+            isThunder: [95,96,99].includes(code),
+            isFog: [45,48].includes(code),
+            isClear: [0,1].includes(code),
+            isCloudy: [2,3].includes(code),
+            isSnow: [71,73,75,77,85,86].includes(code),
+          };
+        }
+        function beaufort(kmh){
+          if(kmh<1)return 0; if(kmh<6)return 1; if(kmh<12)return 2; if(kmh<20)return 3;
+          if(kmh<29)return 4; if(kmh<39)return 5; if(kmh<50)return 6; if(kmh<62)return 7;
+          if(kmh<75)return 8; if(kmh<89)return 9; if(kmh<103)return 10; if(kmh<118)return 11; return 12;
+        }
+        const WD = ['일','월','화','수','목','금','토'];
+        function yoil(s){ const [y,m,d]=s.split('-').map(Number); return WD[new Date(y,m-1,d).getDay()]; }
+
+        function buildAdvice(cur, day){
+          const w = wmo(day.code);
+          const tMax = day.tMax, tMin = day.tMin;
+          const precip = day.precip, uv = day.uv, windLv = beaufort(day.windMax);
+          const outfit=[], itinerary=[], items=[], alerts=[];
+          if(precip>=60){ outfit.push('비가 올 확률이 높아 우산이나 우비를 챙기세요.'); itinerary.push('실내 관람을 우선하고, 야외 산행이나 바닷가 놀이는 미루는 게 좋겠어요.'); items.push('우산 / 우비'); }
+          if(w.isLightRain){ outfit.push('비가 조금 와요. 길이 미끄러우니 걸을 때 주의하세요.'); itinerary.push('노천 체험은 만족도가 낮을 수 있어요.'); items.push('접이식 우산'); }
+          if(w.isHeavyRain){ alerts.push('강우가 제법 세요. 계곡이나 저지대는 피하세요.'); itinerary.push('야외 놀이보다는 실내가 좋아요. 유람선·케이블카는 운휴할 수 있어요.'); items.push('우비 (바람이 불면 장우산은 비추천)'); }
+          if(w.isThunder){ alerts.push('낙뢰 위험! 등산·해변 물놀이·나무 밑은 피하세요.'); itinerary.push('수상 놀이기구는 대부분 운휴해요.'); }
+          if(w.isSnow){ outfit.push('눈이 와요. 미끄럼 방지 신발을 추천해요.'); items.push('장갑·방한 용품'); }
+          if(tMax>=32){ outfit.push('기온이 높아요. 한낮 외출은 되도록 피하세요.'); itinerary.push('야외 활동 시간을 짧게 가져가세요.'); items.push('자외선 차단제·충분한 물·더위 대비 용품'); }
+          if(uv>=5){ outfit.push('자외선이 강해요. 꼼꼼히 차단하세요.'); items.push('자외선 차단제·선글라스·모자'); }
+          if(tMax<=10){ outfit.push('기온이 낮아요. 방한에 신경 쓰세요.'); items.push('두꺼운 겉옷·목도리'); }
+          if((tMax-tMin)>8){ outfit.push('낮밤 일교차가 커요. 겉옷을 챙겨 입었다 벗었다 하세요.'); }
+          if(windLv>=5 && windLv<7){ outfit.push('바람이 제법 불어요.'); itinerary.push('바닷가 유람선·야외 놀이기구는 휴업할 수 있어요.'); items.push('모자가 날아갈 수 있으니 주의, 통풍이 너무 큰 치마는 비추천'); }
+          if(windLv>=7){ alerts.push('강풍 주의! 광고판·바닷가 암초에서 멀리 떨어져 있으세요.'); itinerary.push('해상 놀이기구는 대부분 운휴해요.'); }
+          if(w.isClear){ outfit.push('날씨가 좋아 야외 관광하기 딱 좋아요.'); itinerary.push('일출·일몰 풍경 감상에 좋아요.'); items.push('자외선 차단 잊지 마세요'); }
+          if(w.isCloudy){ outfit.push('빛이 부드러워 사진 찍기 좋아요.'); itinerary.push('폭염 없이 긴 시간 야외 산책하기 좋습니다.'); }
+          if(w.isFog){ alerts.push('가시거리가 짧아요. 페리·항공편이 지연될 수 있어요.'); itinerary.push('바다·산 전망은 별로예요.'); items.push('마스크'); }
+          return {outfit,itinerary,items,alerts};
+        }
+
+        function renderNow(cur, day){
+          const w = wmo(cur.code);
+          nowEl.innerHTML =
+            '<div class="flex items-end gap-4">'+
+              '<span class="text-6xl leading-none">'+w.emoji+'</span>'+
+              '<div><p class="text-4xl font-black">'+Math.round(cur.temp)+'°</p>'+
+              '<p class="text-sm font-bold text-black/70">'+w.label+'</p></div>'+
+            '</div>'+
+            '<p class="mt-4 text-sm text-black/70">최고 '+Math.round(day.tMax)+'° / 최저 '+Math.round(day.tMin)+'° · '+
+            '강수확률 '+day.precip+'% · 바람 '+beaufort(day.windMax)+'급 ('+Math.round(day.windMax)+'km/h)</p>';
+        }
+        function render7d(daily){
+          let cards='';
+          for(let i=0;i<daily.time.length;i++){
+            const w = wmo(daily.weather_code[i]);
+            cards +=
+              '<div class="rounded-xl border border-black/10 bg-white/60 p-3 text-center">'+
+                '<p class="text-xs font-bold text-black/60">'+(i===0?'오늘':yoil(daily.time[i]))+'</p>'+
+                '<p class="text-2xl my-1">'+w.emoji+'</p>'+
+                '<p class="text-[11px] text-black/55">'+w.label+'</p>'+
+                '<p class="mt-1 text-sm font-black">'+Math.round(daily.temperature_2m_max[i])+'°</p>'+
+                '<p class="text-xs text-black/50">'+Math.round(daily.temperature_2m_min[i])+'°</p>'+
+                '<p class="mt-1 text-[11px] text-[var(--sea)]">💧'+daily.precipitation_probability_max[i]+'%</p>'+
+              '</div>';
+          }
+          d7El.innerHTML = '<div class="grid grid-cols-3 gap-3 sm:grid-cols-7">'+cards+'</div>';
+        }
+        function renderAdvice(a){
+          const blocks = [['옷차림',a.outfit,'var(--pine)'],['놀이 팁',a.itinerary,'var(--sea)'],['챙길 물건',a.items,'var(--mustard)']];
+          let html='';
+          if(a.alerts.length){
+            html += '<div class="rounded-xl border-2 border-red-500 bg-red-50 p-5">'+
+                    '<p class="text-xs font-black uppercase tracking-[.2em] text-red-600">위험 주의</p>'+
+                    '<ul class="mt-2 space-y-1 text-sm font-bold text-red-700">'+a.alerts.map(x=>'<li>⚠️ '+x+'</li>').join('')+'</ul></div>';
+          }
+          for(const [title, arr, color] of blocks){
+            if(!arr.length) continue;
+            html += '<div class="mt-5 rounded-xl border-2 border-[var(--ink)] bg-[var(--cream)] p-5">'+
+                    '<h3 class="text-sm font-black" style="color:'+color+'">'+title+'</h3>'+
+                    '<ul class="mt-2 space-y-1 text-sm leading-6 text-black/70">'+arr.map(x=>'<li>· '+x+'</li>').join('')+'</ul></div>';
+          }
+          if(!html){
+            html = '<div class="mt-5 rounded-xl border-2 border-[var(--ink)] bg-[var(--cream)] p-5 text-sm text-black/70">특별한 날씨 주의사항은 없어요. 편안하게 방문하세요!</div>';
+          }
+          advEl.innerHTML = html;
+          advEl.classList.remove('hidden');
+        }
+
+        async function init(){
+          // Same-origin endpoint served by the Cloudflare Worker (server-side fetch + cache).
+          const url = '/api/weather';
+          try{
+            const r = await fetch(url);
+            if(!r.ok) throw new Error('HTTP '+r.status);
+            const d = await r.json();
+            const cur = { code:d.current.weather_code, temp:d.current.temperature_2m };
+            const day = {
+              code: d.daily.weather_code[0],
+              tMax: d.daily.temperature_2m_max[0],
+              tMin: d.daily.temperature_2m_min[0],
+              precip: d.daily.precipitation_probability_max[0] ?? 0,
+              uv: d.daily.uv_index_max[0] ?? 0,
+              windMax: d.daily.wind_speed_10m_max[0],
+            };
+            renderNow(cur, day);
+            render7d(d.daily);
+            renderAdvice(buildAdvice(cur, day));
+            updEl.textContent = '기준 시각: '+new Date().toLocaleString('ko-KR');
+          }catch(e){
+            nowEl.textContent = '날씨 정보를 불러오지 못했습니다. 인터넷 연결을 확인하고 잠시 후 다시 시도해 주세요.';
+            d7El.textContent = '';
+          }
+        }
+        init();
+      })();
     </script>
   </body>
 </html>
