@@ -8,6 +8,17 @@
     "node": "24.21.0",
     "pnpm": "12.4.1"
   },
+  "pnpm": {
+    "approvedBuiltDependencies": [
+      "esbuild",
+      "workerd",
+      "lightningcss",
+      "@img/sharp-libvips",
+      "@img/sharp",
+      "@rolldown/binding",
+      "miniflare"
+    ]
+  },
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
