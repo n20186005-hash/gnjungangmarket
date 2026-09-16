@@ -1,0 +1,274 @@
+---
+import '../styles/global.css';
+
+const place = {
+  name: '강릉 중앙시장',
+  alternateName: 'Gangneung Jungang Market',
+  address: '강원특별자치도 강릉시 금성로 21',
+  phone: '033-648-2285',
+  lat: 37.7539884,
+  lng: 128.8986105,
+  hours: '08:30–21:00',
+  rating: 4.0,
+};
+
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const ogImageURL = Astro.site ? new URL('/brand/og-card.svg', Astro.site).toString() : undefined;
+
+const marketSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['LocalBusiness', 'TouristAttraction'],
+  name: place.name,
+  alternateName: place.alternateName,
+  ...(canonicalURL ? { url: canonicalURL } : {}),
+  telephone: '+82-33-648-2285',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '금성로 21',
+    addressLocality: '강릉시',
+    addressRegion: '강원특별자치도',
+    addressCountry: 'KR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: place.lat,
+    longitude: place.lng,
+  },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    opens: '08:30',
+    closes: '21:00',
+  }],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: place.rating,
+    bestRating: 5,
+  },
+  isAccessibleForFree: true,
+  description: '강릉 도심 한가운데에서 수산물, 농특산물, 생활잡화와 강릉 대표 먹거리를 만나는 전통시장. 점포별 영업시간은 다를 수 있습니다.',
+};
+
+const faqs = [
+  ['입장료가 있나요?', '시장 입장료는 없습니다. 음식, 상품, 체험 비용은 각 점포에서 별도로 결제합니다.'],
+  ['몇 시에 방문하는 게 좋나요?', '장보기가 목적이면 오전부터 점심 사이, 먹거리와 시장 분위기를 함께 즐기려면 늦은 오후가 좋습니다. 점포마다 영업시간과 휴무가 다를 수 있습니다.'],
+  ['주차는 어디에 하나요?', '남대천 둔치의 중앙시장 제1공영주차장, 타워형 제2공영주차장, 월화거리 노상 제3공영주차장, 금성로 노상주차장 등 주변 공영주차장을 이용할 수 있습니다. 요금과 운영 상태는 현장 안내를 확인하세요.'],
+  ['강릉역에서 어떻게 가나요?', '강릉역에서 중앙시장까지는 약 2km입니다. 시내버스 또는 택시를 이용할 수 있고, 206번 버스 이용 시 신영극장 정류장에서 내려 도보로 이동하는 방법이 안내되어 있습니다.'],
+  ['비가 와도 둘러볼 수 있나요?', '시장 내부의 아케이드 구간과 실내 점포를 중심으로 둘러볼 수 있습니다. 다만 월화거리 등 주변 산책 구간은 날씨 영향을 받습니다.'],
+  ['추천 체류 시간은 어느 정도인가요?', '간식 위주라면 1~2시간, 식사와 지하 수산시장·월화거리 산책까지 묶으면 2~3시간 정도로 여유 있게 잡는 편이 좋습니다.'],
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(([question, answer]) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+};
+
+const food = [
+  ['닭강정', '바삭한 튀김과 달콤매콤한 소스. 포장 간식으로 찾기 좋은 중앙시장 대표 메뉴.'],
+  ['육쪽마늘빵', '강릉 여행 간식으로 널리 알려진 풍성한 마늘 풍미의 빵.'],
+  ['소머리국밥', '시장 골목의 든든한 한 끼. 뜨끈한 국물 요리를 찾을 때 잘 어울립니다.'],
+  ['지하 회센터', '동해에서 가까운 강릉의 시장답게 생선과 해산물을 만나는 핵심 공간.'],
+  ['옹심이 · 칼국수', '감자 옹심이와 면 요리로 강원도의 담백하고 포근한 맛을 느껴보세요.'],
+  ['커피콩빵', '커피도시 강릉의 이미지를 작은 간식으로 옮긴 시장표 기념 먹거리.'],
+];
+
+const nearby = [
+  ['월화거리', '시장과 바로 이어지는 도심 산책길. 철도 지하화 이후 조성된 문화·휴식 공간이라 장보기 전후로 걷기 좋습니다.'],
+  ['강릉대도호부 관아', '조선시대 강릉의 행정 중심을 보여주는 역사 공간. 중앙시장과 함께 구도심 동선을 만들기 좋습니다.'],
+  ['임영관 삼문', '고려 시대 객사였던 임영관의 흔적을 품은 국보급 역사 경관. 관아 권역과 함께 둘러보기 좋습니다.'],
+  ['오죽헌', '신사임당과 율곡 이이의 삶과 연결된 강릉의 대표 문화유산. 시장에서 식사한 뒤 이어 가기 좋은 반나절 코스입니다.'],
+];
+
+const photo1 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Gangneung_Jungang_Market_01.jpg/960px-Gangneung_Jungang_Market_01.jpg';
+const photo2 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Gangneung_Jungang_Market_02.jpg/960px-Gangneung_Jungang_Market_02.jpg';
+const photo3 = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Gangneung_Jungang_Market_20220501_003.jpg/960px-Gangneung_Jungang_Market_20220501_003.jpg';
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#174f42" />
+    <meta name="description" content="강릉 중앙시장 방문 전 알아두면 좋은 먹거리, 교통, 주차, 주변 명소, 이용 팁을 한눈에 정리한 비공식 여행 가이드." />
+    <title>강릉 중앙시장 | 먹거리·교통·주차 한눈에 보기</title>
+    {canonicalURL && <link rel="canonical" href={canonicalURL} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="강릉 중앙시장 | 먹거리·교통·주차 한눈에 보기" />
+    <meta property="og:description" content="강릉 도심의 전통시장, 중앙시장을 맛있고 편하게 걷기 위한 비공식 여행 가이드." />
+    {canonicalURL && <meta property="og:url" content={canonicalURL} />}
+    {ogImageURL && <meta property="og:image" content={ogImageURL} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
+    <script type="application/ld+json" set:html={JSON.stringify(marketSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+  </head>
+  <body class="market-grid">
+    <div class="h-3 awning" aria-hidden="true"></div>
+    <header class="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8">
+      <a href="#top" class="flex items-center gap-3 no-underline" aria-label="강릉 중앙시장 가이드 홈">
+        <img src="/brand/logo.svg" width="178" height="52" alt="강릉 중앙시장 가이드 로고" />
+      </a>
+      <nav class="hidden items-center gap-6 text-sm font-bold md:flex" aria-label="주요 메뉴">
+        <a href="#taste" class="hover:text-[var(--chili)]">먹거리</a>
+        <a href="#visit" class="hover:text-[var(--chili)]">방문정보</a>
+        <a href="#around" class="hover:text-[var(--chili)]">주변</a>
+        <a href="#faq" class="hover:text-[var(--chili)]">FAQ</a>
+      </nav>
+      <a href="#map" class="stamp px-3 py-2 text-xs font-black text-[var(--pine)] no-underline">지도 보기</a>
+    </header>
+
+    <main id="top">
+      <section class="relative mx-auto grid min-h-[78vh] max-w-7xl items-center gap-10 overflow-hidden px-5 pb-16 pt-6 md:grid-cols-[.9fr_1.1fr] md:px-8 md:pb-24 md:pt-12">
+        <div class="relative z-10 order-2 md:order-1">
+          <p class="section-kicker mb-5">Gangneung · Seongnam-dong</p>
+          <h1 class="market-title text-[clamp(3.6rem,9vw,8.4rem)]">강릉의<br /><span class="text-[var(--chili)]">맛</span>이 모이는<br />길목</h1>
+          <p class="mt-7 max-w-xl text-lg leading-8 text-black/70">바다 가까운 강릉의 수산물부터 닭강정, 국밥, 옹심이까지. 오래된 장터의 생활감과 여행의 설렘이 한 골목 안에서 겹치는 곳, <strong class="text-[var(--ink)]">강릉 중앙시장</strong>입니다.</p>
+          <div class="mt-8 flex flex-wrap gap-3 text-sm font-bold">
+            <span class="bg-[var(--pine)] px-4 py-2 text-white">전통시장</span>
+            <span class="bg-[var(--mustard)] px-4 py-2">금성로 21</span>
+            <span class="border border-[var(--ink)] px-4 py-2">입장 무료</span>
+          </div>
+        </div>
+        <div class="relative order-1 md:order-2">
+          <div class="absolute -right-8 -top-7 h-28 w-28 rounded-full border-[16px] border-[var(--mustard)] opacity-70" aria-hidden="true"></div>
+          <figure class="photo-frame relative z-10 rotate-[1.5deg] overflow-hidden bg-white">
+            <img src={photo1} alt="강릉 중앙시장 외부 입구와 시장 간판" class="h-[54vh] min-h-[420px] w-full object-cover" fetchpriority="high" />
+          </figure>
+          <div class="absolute -bottom-5 -left-5 z-20 bg-[var(--chili)] px-5 py-4 text-sm font-black text-white shadow-xl -rotate-3">중앙시장 · 성남동</div>
+        </div>
+      </section>
+
+      <section class="bg-[var(--pine)] text-white">
+        <div class="mx-auto grid max-w-7xl gap-8 px-5 py-14 md:grid-cols-4 md:px-8">
+          <div class="md:col-span-1"><p class="text-xs font-black uppercase tracking-[.24em] text-[var(--mustard)]">Market note</p><h2 class="mt-3 text-3xl font-black">한 건물 안에<br />강릉의 일상</h2></div>
+          <div class="border-l border-white/25 pl-5"><strong class="text-3xl text-[var(--mustard)]">B1</strong><p class="mt-2 font-bold">수산시장</p><p class="mt-2 text-sm leading-6 text-white/70">오징어·고등어·문어·활어 등 동해권 수산물을 만나는 공간.</p></div>
+          <div class="border-l border-white/25 pl-5"><strong class="text-3xl text-[var(--mustard)]">1F</strong><p class="mt-2 font-bold">식품·생활시장</p><p class="mt-2 text-sm leading-6 text-white/70">식품, 건어물, 의류, 잡화와 시장 먹거리 골목이 이어집니다.</p></div>
+          <div class="border-l border-white/25 pl-5"><strong class="text-3xl text-[var(--mustard)]">2F</strong><p class="mt-2 font-bold">식당·생활점포</p><p class="mt-2 text-sm leading-6 text-white/70">식당, 침구, 한복·수선 등 생활형 점포가 자리합니다.</p></div>
+        </div>
+      </section>
+
+      <section id="taste" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div class="grid gap-12 md:grid-cols-[.9fr_1.1fr] md:items-end">
+          <div><p class="section-kicker">먹거리 장보기</p><h2 class="mt-3 max-w-xl text-5xl font-black tracking-[-.045em] md:text-7xl">무엇부터<br />먹을까?</h2><p class="mt-6 max-w-lg leading-7 text-black/65">하나의 ‘정답 맛집’보다 골목의 냄새와 줄, 갓 나온 음식의 표정을 보고 고르는 재미가 중앙시장의 방식입니다.</p></div>
+          <figure class="photo-frame overflow-hidden -rotate-1"><img src={photo3} alt="강릉 중앙시장에서 조리 중인 오징어순대와 시장 먹거리" class="h-[430px] w-full object-cover" loading="lazy" /></figure>
+        </div>
+        <div class="mt-14 grid gap-px bg-[var(--line)] border border-[var(--line)] md:grid-cols-2 lg:grid-cols-3">
+          {food.map(([name, desc], i) => <article class="group bg-[var(--cream)] p-7 transition hover:bg-white"><div class="mb-6 flex items-center justify-between"><span class="font-mono text-sm text-black/40">0{i+1}</span><span class="h-3 w-3 rounded-full bg-[var(--chili)] group-hover:bg-[var(--mustard)]"></span></div><h3 class="text-2xl font-black">{name}</h3><p class="mt-3 text-sm leading-6 text-black/60">{desc}</p></article>)}
+        </div>
+      </section>
+
+      <section id="visit" class="bg-[var(--paper-deep)] py-20 md:py-28">
+        <div class="mx-auto max-w-7xl px-5 md:px-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"><div><p class="section-kicker">장보기 수첩</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">방문 전에 이것만</h2></div><p class="max-w-lg text-sm leading-6 text-black/60">전통시장은 점포별 영업시간과 휴무가 다릅니다. 아래 시간은 시장 방문 계획을 위한 대표 안내이며, 특정 점포를 꼭 방문한다면 개별 확인이 가장 안전합니다.</p></div>
+          <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">OPEN</p><h3 class="mt-2 text-2xl font-black">08:30–21:00</h3><p class="mt-3 text-sm leading-6 text-black/60">관광 안내 기준 대표 운영시간. 점포별 상이.</p></article>
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">PRICE</p><h3 class="mt-2 text-2xl font-black">입장료 없음</h3><p class="mt-3 text-sm leading-6 text-black/60">먹거리·상품은 각 점포에서 별도 결제.</p></article>
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">STAY</p><h3 class="mt-2 text-2xl font-black">1–2시간</h3><p class="mt-3 text-sm leading-6 text-black/60">식사와 월화거리 산책까지 묶으면 2–3시간을 추천.</p></article>
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">BEST TIME</p><h3 class="mt-2 text-2xl font-black">오전 · 늦은 오후</h3><p class="mt-3 text-sm leading-6 text-black/60">장보기는 오전~점심, 먹거리 분위기는 늦은 오후가 어울립니다.</p></article>
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">CONTACT</p><h3 class="mt-2 text-2xl font-black">033-648-2285</h3><p class="mt-3 text-sm leading-6 text-black/60">강릉 중앙시장 대표 문의 전화.</p></article>
+            <article class="ticket relative p-7"><p class="text-xs font-black text-[var(--chili)]">RATING</p><h3 class="mt-2 text-2xl font-black">★ {place.rating.toFixed(1)} / 5</h3><p class="mt-3 text-sm leading-6 text-black/60">공개 지도 서비스 표시값은 시점에 따라 변동될 수 있습니다.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div class="grid gap-12 lg:grid-cols-2">
+          <div>
+            <p class="section-kicker">상세 교통</p><h2 class="mt-3 text-4xl font-black">강릉역에서 시장까지</h2>
+            <ol class="mt-8 space-y-0 border-l-2 border-[var(--pine)]">
+              <li class="relative pl-8 pb-8"><span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-[var(--pine)] ring-4 ring-[var(--paper)]"></span><h3 class="font-black">KTX 강릉역 출발</h3><p class="mt-2 text-sm leading-6 text-black/60">중앙시장까지 약 2km. 짐이 많다면 택시가 가장 단순하고, 도심을 천천히 보고 싶다면 버스나 도보 동선을 선택할 수 있습니다.</p></li>
+              <li class="relative pl-8 pb-8"><span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-[var(--mustard)] ring-4 ring-[var(--paper)]"></span><h3 class="font-black">버스 이용</h3><p class="mt-2 text-sm leading-6 text-black/60">관광 안내에는 206번 버스로 신영극장 정류장 하차 후 약 5분 걷는 경로가 소개됩니다. 현장에서는 실시간 버스 정보를 함께 확인하세요.</p></li>
+              <li class="relative pl-8"><span class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-[var(--chili)] ring-4 ring-[var(--paper)]"></span><h3 class="font-black">시장 도착</h3><p class="mt-2 text-sm leading-6 text-black/60">금성로·중앙시장길 일대에서 보행자가 많아집니다. 자동차로 접근한다면 먼저 공영주차장에 주차하고 골목은 걸어서 보는 편이 편합니다.</p></li>
+            </ol>
+          </div>
+          <div>
+            <p class="section-kicker">주차 정보</p><h2 class="mt-3 text-4xl font-black">차는 골목 밖에 두고</h2>
+            <div class="mt-8 overflow-hidden border-2 border-[var(--ink)] bg-[var(--cream)]">
+              {['중앙시장 제1공영주차장 · 남대천 둔치','중앙시장 제2공영주차장 · 타워형','중앙시장 제3공영주차장 · 월화거리 노상','금성로 노상주차장','성내동 광장 공영주차장'].map((p, i) => <div class="flex items-center gap-4 border-b border-black/15 px-5 py-4 last:border-b-0"><span class="grid h-8 w-8 shrink-0 place-items-center bg-[var(--pine)] text-xs font-black text-white">P{i+1}</span><span class="font-bold">{p}</span></div>)}
+            </div>
+            <p class="mt-4 text-xs leading-5 text-black/55">주차장 요금·운영 방식·잔여 면수는 행사와 운영 상황에 따라 달라질 수 있습니다. 강릉시 교통정보 또는 현장 표지판을 기준으로 확인하세요.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="overflow-hidden bg-[var(--ink)] text-white">
+        <div class="mx-auto grid max-w-7xl lg:grid-cols-2">
+          <figure class="min-h-[460px]"><img src={photo2} alt="사람들이 오가는 강릉 중앙시장 실내 통로" class="h-full min-h-[460px] w-full object-cover" loading="lazy" /></figure>
+          <div class="flex flex-col justify-center px-6 py-16 md:px-14 lg:py-20"><p class="section-kicker !text-[var(--mustard)]">시장 걷는 법</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">빨리 사기보다<br />천천히 고르기</h2><div class="mt-8 grid gap-6 text-sm leading-7 text-white/70 sm:grid-cols-2"><p><strong class="block text-white">① 지하부터</strong>수산물과 회센터를 먼저 보고 올라오면 시장의 ‘바다 쪽 얼굴’을 빠르게 이해할 수 있습니다.</p><p><strong class="block text-white">② 한 손은 비워두기</strong>간식 포장과 장바구니가 금방 늘어납니다. 큰 짐은 숙소나 차량에 두고 오는 편이 좋습니다.</p><p><strong class="block text-white">③ 골목도 코스</strong>시장 안만 보지 말고 월화거리와 구도심 역사 공간을 함께 걸으면 강릉의 시간층이 더 잘 보입니다.</p><p><strong class="block text-white">④ 인기 줄은 분산</strong>주말과 식사 시간에는 유명 먹거리 앞 대기가 길어질 수 있어, 한 곳에만 목적을 두기보다 비슷한 메뉴를 비교해 보세요.</p></div></div>
+        </div>
+      </section>
+
+      <section id="around" class="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <p class="section-kicker">주변 명소</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">시장 밖으로 이어지는 강릉</h2>
+        <div class="mt-12 grid gap-5 md:grid-cols-2">
+          {nearby.map(([name, desc], i) => <article class="border-t-4 border-[var(--pine)] bg-[var(--cream)] p-7"><div class="flex items-start justify-between gap-5"><div><p class="text-xs font-black text-[var(--chili)]">AROUND 0{i+1}</p><h3 class="mt-2 text-2xl font-black">{name}</h3></div><span class="text-4xl font-black text-[var(--mustard)]">↗</span></div><p class="mt-4 text-sm leading-7 text-black/60">{desc}</p></article>)}
+        </div>
+      </section>
+
+      <section id="map" class="bg-[var(--pine)] px-5 py-20 text-white md:px-8 md:py-24">
+        <div class="mx-auto max-w-7xl">
+          <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"><div><p class="text-xs font-black uppercase tracking-[.22em] text-[var(--mustard)]">Map</p><h2 class="mt-3 text-4xl font-black">금성로 21, 강릉 중앙시장</h2></div><p class="max-w-md text-sm leading-6 text-white/65">지도는 한국어로 표시됩니다. 실제 이동 전 교통 통제와 주차장 운영 정보를 함께 확인하세요.</p></div>
+          <div class="overflow-hidden border-[8px] border-white/15 bg-white/5 shadow-2xl">
+            <iframe title="강릉 중앙시장 Google 지도" src="https://www.google.com/maps?q=37.7539884,128.8986105&hl=ko&z=17&output=embed" class="h-[520px] w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="mx-auto max-w-5xl px-5 py-20 md:px-8 md:py-28">
+        <div class="text-center"><p class="section-kicker">FAQ</p><h2 class="mt-3 text-5xl font-black tracking-[-.04em]">자주 묻는 질문</h2></div>
+        <div class="mt-12 divide-y-2 divide-[var(--ink)] border-y-2 border-[var(--ink)]">
+          {faqs.map(([q, a], i) => <details class="group py-6"><summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-black"><span><span class="mr-3 text-[var(--chili)]">{String(i+1).padStart(2,'0')}</span>{q}</span><span class="text-2xl transition group-open:rotate-45">＋</span></summary><p class="max-w-3xl pt-4 pl-10 text-sm leading-7 text-black/65">{a}</p></details>)}
+        </div>
+      </section>
+    </main>
+
+    <footer class="torn bg-[var(--ink)] px-5 pb-10 pt-20 text-white md:px-8">
+      <div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
+        <div><img src="/brand/logo-inverse.svg" width="190" height="55" alt="강릉 중앙시장 가이드" /><p class="mt-5 max-w-xl text-sm leading-6 text-white/55">주소·대표 연락처·시장 구성은 강릉시 및 한국관광공사 공개 정보를 바탕으로 정리했습니다. 점포별 영업시간, 가격, 주차 운영은 현장 상황에 따라 달라질 수 있습니다.</p></div>
+        <div class="text-xs leading-6 text-white/50 md:text-right"><p>사진: Grapesurgeon, Mobius6 / Wikimedia Commons / CC BY-SA 4.0</p><p><a href="https://commons.wikimedia.org/wiki/File:Gangneung_Jungang_Market_01.jpg" rel="license noreferrer">사진 1</a> · <a href="https://commons.wikimedia.org/wiki/File:Gangneung_Jungang_Market_02.jpg" rel="license noreferrer">사진 2</a> · <a href="https://commons.wikimedia.org/wiki/File:Gangneung_Jungang_Market_20220501_003.jpg" rel="license noreferrer">사진 3</a></p></div>
+      </div>
+      <div class="mx-auto mt-10 max-w-7xl border-t border-white/15 pt-6 text-xs text-white/45">
+        <p>이 사이트는 강릉 중앙시장 또는 관련 기관의 공식 웹사이트가 아닌 비공식 여행 안내 페이지입니다.</p>
+        <div class="mt-4 grid gap-3 md:grid-cols-3">
+          <details><summary class="cursor-pointer font-bold text-white/70">개인정보 안내</summary><p class="mt-2 leading-5">이 사이트는 로그인·회원정보·직접 입력 폼을 운영하지 않습니다. 방문 통계는 동의한 경우에만 Google Analytics 4(G-HXM22WWPKP)를 불러오며, 브라우저에 분석 동의 상태를 저장합니다.</p></details>
+          <details><summary class="cursor-pointer font-bold text-white/70">이용 안내</summary><p class="mt-2 leading-5">관광·교통·영업 정보는 공개 자료를 바탕으로 한 참고용입니다. 실제 운영, 가격, 휴무, 교통 통제는 현장 및 공식 기관 안내를 우선합니다.</p></details>
+          <details><summary class="cursor-pointer font-bold text-white/70">쿠키 설정</summary><p class="mt-2 leading-5">분석 쿠키는 선택 사항입니다. 아래 ‘쿠키 설정’ 버튼에서 언제든 분석 허용 여부를 다시 선택할 수 있습니다.</p><button id="cookie-settings" class="mt-2 border border-white/30 px-3 py-1 font-bold text-white">쿠키 설정</button></details>
+        </div>
+      </div>
+    </footer>
+
+    <div id="cookie-banner" class="fixed inset-x-4 bottom-4 z-50 hidden max-w-xl border-2 border-[var(--ink)] bg-[var(--cream)] p-5 text-[var(--ink)] shadow-2xl md:left-auto md:right-6 md:w-[520px]" role="dialog" aria-label="쿠키 설정">
+      <p class="font-black">분석 쿠키 선택</p><p class="mt-2 text-sm leading-6 text-black/65">필수 기능에는 쿠키가 필요하지 않습니다. 동의하면 Google Analytics 4를 사용해 익명화된 방문 통계를 수집합니다.</p>
+      <div class="mt-4 flex gap-2"><button id="cookie-reject" class="border border-[var(--ink)] px-4 py-2 text-sm font-bold">거부</button><button id="cookie-accept" class="bg-[var(--pine)] px-4 py-2 text-sm font-bold text-white">분석 허용</button></div>
+    </div>
+    <script is:inline>
+      const consentKey = 'gjm-analytics-consent';
+      const banner = document.getElementById('cookie-banner');
+      const loadGA = () => {
+        if (document.querySelector('script[data-ga4]')) return;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){ window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', 'G-HXM22WWPKP', { anonymize_ip: true });
+        const script = document.createElement('script');
+        script.async = true; script.dataset.ga4 = 'true';
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP';
+        document.head.appendChild(script);
+      };
+      const choice = localStorage.getItem(consentKey);
+      if (choice === 'yes') loadGA(); else if (choice !== 'no') banner?.classList.remove('hidden');
+      document.getElementById('cookie-accept')?.addEventListener('click', () => { localStorage.setItem(consentKey,'yes'); banner?.classList.add('hidden'); loadGA(); });
+      document.getElementById('cookie-reject')?.addEventListener('click', () => { localStorage.setItem(consentKey,'no'); banner?.classList.add('hidden'); });
+      document.getElementById('cookie-settings')?.addEventListener('click', () => banner?.classList.remove('hidden'));
+    </script>
+  </body>
+</html>
