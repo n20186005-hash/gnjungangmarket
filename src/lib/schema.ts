@@ -1,10 +1,6 @@
 // JSON-LD 구조화 데이터 빌더. 모든 실체 사실은 src/config.ts(ATTRACTION)에서 가져옵니다.
-import { ATTRACTION, HOURS, SITE_NAME } from '../config';
-
-interface FaqItem {
-  q: string;
-  a: string;
-}
+import { ATTRACTION, HOURS, DOMAIN } from '../config';
+import { siteName, ui, localizedPath, type Locale, type FaqItem } from '../i18n';
 
 export function marketJsonLd(): Record<string, unknown> {
   const { geo, rating, reviewCount } = ATTRACTION;
@@ -59,17 +55,17 @@ export function marketJsonLd(): Record<string, unknown> {
   };
 }
 
-export function webSiteJsonLd(): Record<string, unknown> {
+export function webSiteJsonLd(locale: Locale): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: SITE_NAME,
+    name: siteName[locale],
     url: 'https://gnjungangmarket.com/',
-    inLanguage: 'ko-KR',
+    inLanguage: locale === 'ko' ? 'ko-KR' : locale,
   };
 }
 
-export function breadcrumbJsonLd(): Record<string, unknown> {
+export function breadcrumbJsonLd(locale: Locale): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -77,8 +73,8 @@ export function breadcrumbJsonLd(): Record<string, unknown> {
       {
         '@type': 'ListItem',
         position: 1,
-        name: '홈',
-        item: 'https://gnjungangmarket.com/',
+        name: ui[locale].footer.home,
+        item: `https://${DOMAIN}${localizedPath(locale)}`,
       },
     ],
   };
@@ -97,4 +93,14 @@ export function faqJsonLd(items: FaqItem[]): Record<string, unknown> {
       },
     })),
   };
+}
+
+// 한 페이지(언어)에 들어가는 전체 JSON-LD 묶음
+export function buildSchemas(locale: Locale): Record<string, unknown>[] {
+  return [
+    webSiteJsonLd(locale),
+    marketJsonLd(),
+    breadcrumbJsonLd(locale),
+    faqJsonLd(ui[locale].faq.items),
+  ];
 }

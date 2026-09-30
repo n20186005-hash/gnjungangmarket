@@ -10,7 +10,21 @@ const site = SITE_URL.trim() || undefined;
 export default defineConfig({
   site,
   output: 'static',
-  integrations: site ? [sitemap()] : [],
+  i18n: {
+    defaultLocale: 'ko',
+    locales: ['ko', 'en', 'zh', 'ja'],
+    routing: { prefixDefaultLocale: false },
+  },
+  integrations: site
+    ? [
+        sitemap({
+          i18n: {
+            defaultLocale: 'ko',
+            locales: { ko: 'ko-KR', en: 'en', zh: 'zh-CN', ja: 'ja' },
+          },
+        }),
+      ]
+    : [],
   vite: {
     plugins: [tailwindcss()],
   },

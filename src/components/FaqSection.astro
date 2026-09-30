@@ -1,16 +1,20 @@
 ---
-import { FAQ_KO } from '../lib/faq';
+import { ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale].faq;
 ---
 
 <section id="faq" class="section">
   <div class="container">
-    <h2 class="section-title">자주 묻는 질문</h2>
-    <p class="section-lead">
-      영업시간·주차·교통 등 방문 전 자주 묻는 질문을 모았습니다.
-    </p>
+    <h2 class="section-title">{t.title}</h2>
+    <p class="section-lead">{t.lead}</p>
     <div class="faq-list">
       {
-        FAQ_KO.map((item) => (
+        t.items.map((item) => (
           <details class="faq-item">
             <summary>{item.q}</summary>
             <p>{item.a}</p>

@@ -1,13 +1,18 @@
 ---
 import { SOURCES, ATTRACTION } from '../config';
+import { ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale].sources;
 ---
 
 <section id="sources" class="section">
   <div class="container">
-    <h2 class="section-title">정보 출처</h2>
-    <p class="section-lead">
-      이 가이드는 아래 공공·공식 자료를 참고하여 작성한 비공식 페이지입니다.
-    </p>
+    <h2 class="section-title">{t.title}</h2>
+    <p class="section-lead">{t.lead}</p>
     <ul class="source-list">
       {
         SOURCES.map((s) => (
@@ -20,10 +25,7 @@ import { SOURCES, ATTRACTION } from '../config';
         ))
       }
     </ul>
-    <p class="muted small">
-      시장 위치·좌표·평점은 Google 지도 공개 정보(동기화 시점 2026년 9월)를
-      참고했습니다. 영업시간·가격 등은 현장 사정에 따라 변동될 수 있습니다.
-    </p>
+    <p class="muted small">{t.note}</p>
   </div>
 </section>
 

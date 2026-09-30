@@ -1,23 +1,23 @@
 ---
-import { ATTRACTION } from '../config';
+import { ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale].weather;
 ---
 
 <section id="weather" class="section">
   <div class="container">
-    <h2 class="section-title">실시간 날씨</h2>
-    <p class="section-lead">
-      강릉 중앙시장 인근의 현재 날씨와 7일 예보·방문 조언입니다. 노상 먹거리 골목
-      둘러보기 전에 확인하세요.
-    </p>
+    <h2 class="section-title">{t.title}</h2>
+    <p class="section-lead">{t.lead}</p>
 
     <div id="weather-root" class="weather-root">
-      <div class="card weather-loading">날씨를 불러오는 중…</div>
+      <div class="card weather-loading">{t.loading}</div>
     </div>
 
-    <p class="muted small">
-      기상 정보는 동일 출처 API로 제공되며, 예보는 참고용입니다. 실제 방문 시
-      기상특보 등 공식 안내를 확인하세요.
-    </p>
+    <p class="muted small">{t.note}</p>
   </div>
 </section>
 
@@ -38,7 +38,7 @@ import { ATTRACTION } from '../config';
   }
 </style>
 
-<script>
+<script define:vars={{ locale }}>
   import {
     wmoLabel,
     kmhToBeaufort,
@@ -47,33 +47,36 @@ import { ATTRACTION } from '../config';
     buildAdvice,
     type WeatherPayload,
   } from '../lib/weather';
+  import { ui, type Locale } from '../i18n';
 
+  const L = locale;
+  const TW = ui[L].weather;
   const root = document.getElementById('weather-root');
   if (root) {
     const render = (data: WeatherPayload) => {
       const now = data.current;
-      const cur = wmoLabel(now.weather_code);
-      const advice = buildAdvice(data);
+      const cur = wmoLabel(now.weather_code, L);
+      const advice = buildAdvice(data, L);
       const days = (data.daily ?? []).slice(0, 7);
 
       const adviceHtml = [
         advice.risk.length
-          ? `<div class="risk-banner"><strong>주의</strong><ul>${advice.risk
+          ? `<div class="risk-banner"><strong>${TW.risk}</strong><ul>${advice.risk
               .map((r) => `<li>${r}</li>`)
               .join('')}</ul></div>`
           : '',
         advice.outfit.length
-          ? `<div class="advice-card"><h4>옷차림</h4><ul>${advice.outfit
+          ? `<div class="advice-card"><h4>${TW.outfit}</h4><ul>${advice.outfit
               .map((x) => `<li>${x}</li>`)
               .join('')}</ul></div>`
           : '',
         advice.plan.length
-          ? `<div class="advice-card"><h4>방문 계획</h4><ul>${advice.plan
+          ? `<div class="advice-card"><h4>${TW.plan}</h4><ul>${advice.plan
               .map((x) => `<li>${x}</li>`)
               .join('')}</ul></div>`
           : '',
         advice.items.length
-          ? `<div class="advice-card"><h4>챙길 물건</h4><ul>${advice.items
+          ? `<div class="advice-card"><h4>${TW.items}</h4><ul>${advice.items
               .map((x) => `<li>${x}</li>`)
               .join('')}</ul></div>`
           : '',
@@ -81,8 +84,8 @@ import { ATTRACTION } from '../config';
 
       const dayHtml = days
         .map((d, i) => {
-          const w = wmoLabel(d.weather_code);
-          const label = i === 0 ? '오늘' : '+' + i + '일';
+          const w = wmoLabel(d.weather_code, L);
+          const label = i === 0 ? TW.today : TW.plusDay(i);
           return `<div class="day">
             <span class="day-name">${label}</span>
             <span class="day-icon">${w.icon}</span>
@@ -90,9 +93,11 @@ import { ATTRACTION } from '../config';
             <span class="day-temp">${Math.round(d.temperature_2m_min)}° / ${Math.round(
             d.temperature_2m_max
           )}°</span>
-            <span class="day-meta">강수 ${d.precipitation_probability_max}% · 바람 ${beaufortLabel(
-            d.wind_speed_10m_max
-          )}(${kmhToBeaufort(d.wind_speed_10m_max)})) · 자외선 ${uvLabel(
+            <span class="day-meta">${TW.metaRain} ${d.precipitation_probability_max}% · ${TW.metaWind} ${beaufortLabel(
+            d.wind_speed_10m_max,
+            L
+          )}(${kmhToBeaufort(d.wind_speed_10m_max)})) · ${TW.metaUv} ${uvLabel(
+            L,
             d.uv_index_max
           )}</span>
           </div>`;
@@ -109,12 +114,12 @@ import { ATTRACTION } from '../config';
             </div>
           </div>
           <ul class="current-meta">
-            <li>체감 ${Math.round(now.apparent_temperature)}°C</li>
-            <li>습도 ${now.relative_humidity_2m}%</li>
-            <li>바람 ${beaufortLabel(now.wind_speed_10m)} (${Math.round(
+            <li>${TW.curFeels} ${Math.round(now.apparent_temperature)}°C</li>
+            <li>${TW.curHumidity} ${now.relative_humidity_2m}%</li>
+            <li>${TW.curWind} ${beaufortLabel(now.wind_speed_10m, L)} (${Math.round(
         now.wind_speed_10m
       )} km/h)</li>
-            <li>강수 ${now.precipitation} mm</li>
+            <li>${TW.curRain} ${now.precipitation} mm</li>
           </ul>
         </div>
         ${adviceHtml}
@@ -123,10 +128,10 @@ import { ATTRACTION } from '../config';
     };
 
     const fallback = () => {
-      root.innerHTML = `<div class="card">현재 날씨를 일시적으로 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.</div>`;
+      root.innerHTML = `<div class="card">${TW.fallback}</div>`;
     };
 
-    fetch('/api/weather')
+    fetch(`/api/weather?lang=${encodeURIComponent(L)}`)
       .then((r) => {
         if (!r.ok) throw new Error('bad');
         return r.json();

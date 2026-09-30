@@ -1,48 +1,52 @@
 ---
 import { ATTRACTION, HOURS } from '../config';
+import { ui, HOURS_DAILY, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale];
 ---
 
 <section id="top" class="hero">
   <div id="intro" class="container hero-inner">
     <div class="hero-copy">
-      <span class="tag">강원 강릉 · 전통시장</span>
+      <span class="tag">{t.hero.tag}</span>
       <h1>{ATTRACTION.nameKo} <span class="en">({ATTRACTION.nameEn})</span></h1>
-      <p class="hero-sub">
-        강릉 시내 중심가의 향토 전통시장. 달콤짭짤한 <strong>닭강정</strong>과
-        노상 먹거리 골목, 싱싱한 농수산 특산물로 알려진 지역 명소입니다.
-      </p>
+      <p class="hero-sub">{t.hero.sub}</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#hours">영업시간 보기</a>
+        <a class="btn btn-primary" href="#hours">{t.hero.ctaHours}</a>
         <a
           class="btn btn-ghost"
           href={ATTRACTION.mapsUrl}
           target="_blank"
-          rel="noopener noreferrer">지도 열기</a
+          rel="noopener noreferrer">{t.hero.ctaMap}</a
         >
       </div>
     </div>
 
-    <aside class="info-card" aria-label="기본 정보">
-      <h2>기본 정보</h2>
+    <aside class="info-card" aria-label={t.hero.infoTitle}>
+      <h2>{t.hero.infoTitle}</h2>
       <dl>
         <div>
-          <dt>주소</dt>
+          <dt>{t.hero.labelAddress}</dt>
           <dd>{ATTRACTION.address.street}</dd>
         </div>
         <div>
-          <dt>전화</dt>
+          <dt>{t.hero.labelPhone}</dt>
           <dd><a href={`tel:${ATTRACTION.telephone}`}>{ATTRACTION.telephoneDisplay}</a></dd>
         </div>
         <div>
-          <dt>구글 평점</dt>
+          <dt>{t.hero.labelRating}</dt>
           <dd>{ATTRACTION.rating}점 · {ATTRACTION.reviewCount.toLocaleString()}개 후기</dd>
         </div>
         <div>
-          <dt>일반적 영업시간</dt>
-          <dd>{HOURS.daily}</dd>
+          <dt>{t.hero.labelHours}</dt>
+          <dd>{HOURS_DAILY[locale]}</dd>
         </div>
         <div>
-          <dt>위치</dt>
+          <dt>{t.hero.labelLocation}</dt>
           <dd>{ATTRACTION.plusCode}</dd>
         </div>
       </dl>

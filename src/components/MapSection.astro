@@ -1,16 +1,23 @@
 ---
 import { ATTRACTION } from '../config';
+import { ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale].map;
 ---
 
 <section id="map" class="section">
   <div class="container">
-    <h2 class="section-title">위치 지도</h2>
+    <h2 class="section-title">{t.title}</h2>
     <p class="section-lead">
       {ATTRACTION.address.street} · {ATTRACTION.plusCode}
     </p>
     <div class="map-wrap">
       <iframe
-        title="강릉중앙시장 위치 지도"
+        title={t.title}
         src={ATTRACTION.mapsEmbedUrl}
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
@@ -18,7 +25,7 @@ import { ATTRACTION } from '../config';
     </div>
     <p class="muted small">
       <a href={ATTRACTION.mapsUrl} target="_blank" rel="noopener noreferrer"
-        >Google 지도에서 크게 보기</a
+        >{t.open}</a
       >
     </p>
   </div>

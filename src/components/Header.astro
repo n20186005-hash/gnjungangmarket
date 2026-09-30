@@ -1,28 +1,55 @@
 ---
 import { ATTRACTION } from '../config';
+import { ui, locales, defaultLocale, localizedPath, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+
+const langNames: Record<Locale, string> = {
+  ko: '한국어',
+  en: 'English',
+  zh: '中文',
+  ja: '日本語',
+};
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="#top" aria-label="강릉중앙시장 가이드 홈">
+    <a class="brand" href={localizedPath(locale)} aria-label="Gangneung Jungang Market guide home">
       <img src="/icon.svg" width="34" height="34" alt="" />
       <span>강릉중앙시장 <small>가이드</small></span>
     </a>
     <nav class="nav" aria-label="주요 메뉴">
-      <a href="#intro">소개</a>
-      <a href="#hours">영업시간</a>
-      <a href="#food">먹거리</a>
-      <a href="#transport">교통·주차</a>
-      <a href="#weather">날씨</a>
-      <a href="#map">지도</a>
-      <a href="#faq">FAQ</a>
+      <a href={`#intro`}>{ui[locale].nav.intro}</a>
+      <a href={`#hours`}>{ui[locale].nav.hours}</a>
+      <a href={`#food`}>{ui[locale].nav.food}</a>
+      <a href={`#transport`}>{ui[locale].nav.transport}</a>
+      <a href={`#weather`}>{ui[locale].nav.weather}</a>
+      <a href={`#map`}>{ui[locale].nav.map}</a>
+      <a href={`#faq`}>{ui[locale].nav.faq}</a>
       <a
         class="nav-map"
         href={ATTRACTION.mapsUrl}
         target="_blank"
-        rel="noopener noreferrer">지도 열기</a
+        rel="noopener noreferrer">{ui[locale].nav.openMap}</a
       >
     </nav>
+    <div class="lang-switch" role="group" aria-label="Language">
+      {
+        locales.map((l) => (
+          <a
+            href={localizedPath(l)}
+            class:list={['lang-link', { active: l === locale }]}
+            hreflang={l === defaultLocale ? 'ko' : l}
+            aria-current={l === locale ? 'true' : undefined}
+          >
+            {langNames[l]}
+          </a>
+        ))
+      }
+    </div>
   </div>
 </header>
 
@@ -74,6 +101,28 @@ import { ATTRACTION } from '../config';
     background: rgba(255, 255, 255, 0.14);
     color: #fff;
   }
+  .lang-switch {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+  }
+  .lang-link {
+    color: #eaf2ef;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  .lang-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+  }
+  .lang-link.active {
+    background: #fff;
+    color: var(--color-brand-dark);
+  }
   .nav-map {
     background: var(--color-accent);
     color: #2a1c00 !important;
@@ -81,9 +130,15 @@ import { ATTRACTION } from '../config';
   .nav-map:hover {
     background: #f0b659 !important;
   }
-  @media (max-width: 720px) {
+  @media (max-width: 980px) {
     .nav a:not(.nav-map) {
       display: none;
+    }
+  }
+  @media (max-width: 520px) {
+    .lang-link {
+      font-size: 0.72rem;
+      padding: 0.3rem 0.4rem;
     }
   }
 </style>

@@ -1,20 +1,18 @@
 ---
-const facilities = [
-  { icon: '🅿️', name: '주차', desc: '인근 공영·시장 주차장 이용. 요금과 운영 상태는 강릉시 교통정보(its.gn.go.kr)를 확인하세요.' },
-  { icon: '🚻', name: '화장실', desc: '시장 내·외부 공중화장실 이용 가능.' },
-  { icon: '🍢', name: '먹자골목', desc: '닭강정·노점 간식이 모여 있는 핵심 동선.' },
-  { icon: '🛒', name: '특산물 코너', desc: '농수산·가공 특산물을 파는 점포들이 모여 있습니다.' },
-  { icon: '💳', name: '결제', desc: '대부분 카드 결제 가능. 일부 노점은 현금을 선호하니 소액 현금을 준비하면 좋습니다.' },
-  { icon: '♿', name: '이동 편의', desc: '평지 형태의 시장으로 휠체어·유모차 이동이 비교적 수월합니다.' },
-];
+import { FACILITIES, ui, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const facilities = FACILITIES[locale];
+const meta = ui[locale].facilities;
 ---
 
 <section id="facilities" class="section">
   <div class="container">
-    <h2 class="section-title">시설·편의</h2>
-    <p class="section-lead">
-      시장을 편하게 둘러보기 위한 기본 편의 정보입니다.
-    </p>
+    <h2 class="section-title">{meta.title}</h2>
+    <p class="section-lead">{meta.lead}</p>
     <div class="fac-grid">
       {
         facilities.map((f) => (

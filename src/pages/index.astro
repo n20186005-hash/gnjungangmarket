@@ -1,38 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSection from '../components/HeroSection.astro';
-import HoursSection from '../components/HoursSection.astro';
-import FoodSection from '../components/FoodSection.astro';
-import FacilitiesSection from '../components/FacilitiesSection.astro';
-import TransportSection from '../components/TransportSection.astro';
-import WeatherSection from '../components/WeatherSection.astro';
-import MapSection from '../components/MapSection.astro';
-import FaqSection from '../components/FaqSection.astro';
-import SourcesSection from '../components/SourcesSection.astro';
-import { SITE_NAME } from '../config';
-import { marketJsonLd, webSiteJsonLd, breadcrumbJsonLd, faqJsonLd } from '../lib/schema';
-import { FAQ_KO } from '../lib/faq';
+import HomeContent from '../components/HomeContent.astro';
+import { buildSchemas } from '../lib/schema';
+import type { Locale } from '../i18n';
 
-const schemas = [
-  webSiteJsonLd(),
-  marketJsonLd(),
-  breadcrumbJsonLd(),
-  faqJsonLd(FAQ_KO),
-];
+const locale: Locale = 'ko';
+const schemas = buildSchemas(locale);
 ---
 
-<BaseLayout
-  title={SITE_NAME}
-  description="강릉 중앙시장(강원특별자치도 강릉시 금성로 21) 비공식 여행 가이드. 영업시간·먹거리(닭강정)·주차·대중교통·실시간 날씨를 한눈에 안내합니다."
-  schemas={schemas}
->
-  <HeroSection />
-  <HoursSection />
-  <FoodSection />
-  <FacilitiesSection />
-  <TransportSection />
-  <WeatherSection />
-  <MapSection />
-  <FaqSection />
-  <SourcesSection />
+<BaseLayout locale={locale} schemas={schemas}>
+  <HomeContent locale={locale} />
 </BaseLayout>

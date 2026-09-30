@@ -1,41 +1,45 @@
 ---
 import { ATTRACTION, SOURCES, SITE_NAME } from '../config';
+import { ui, localizedPath, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui[locale].footer;
 ---
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <h3>강릉중앙시장</h3>
+      <h3>{t.brandTitle}</h3>
       <p class="muted">
         {ATTRACTION.address.street}<br />
         전화 <a href={`tel:${ATTRACTION.telephone}`}>{ATTRACTION.telephoneDisplay}</a
         ><br />
         구글 평점 {ATTRACTION.rating}점 · {ATTRACTION.reviewCount.toLocaleString()}개 후기
       </p>
-      <p class="muted small">
-        본 사이트는 비공식 안내 페이지이며, 영업시간·가격·휴무 등은 현장 사정에 따라
-        바뀔 수 있습니다. 방문 전 공식 안내를 확인하세요.
-      </p>
+      <p class="muted small">{t.disclaimer}</p>
     </div>
 
-    <nav aria-label="바로가기">
-      <h3>바로가기</h3>
+    <nav aria-label={t.quickTitle}>
+      <h3>{t.quickTitle}</h3>
       <ul>
-        <li><a href="#hours">영업시간</a></li>
-        <li><a href="#food">먹거리(닭강정)</a></li>
-        <li><a href="#transport">교통·주차</a></li>
-        <li><a href="#weather">실시간 날씨</a></li>
-        <li><a href="#faq">자주 묻는 질문</a></li>
+        <li><a href={`#hours`}>{ui[locale].nav.hours}</a></li>
+        <li><a href={`#food`}>{ui[locale].nav.food}</a></li>
+        <li><a href={`#transport`}>{ui[locale].nav.transport}</a></li>
+        <li><a href={`#weather`}>{ui[locale].nav.weather}</a></li>
+        <li><a href={`#faq`}>{ui[locale].nav.faq}</a></li>
         <li>
           <a href={ATTRACTION.mapsUrl} target="_blank" rel="noopener noreferrer"
-            >Google 지도에서 보기</a
+            >{ui[locale].nav.openMap}</a
           >
         </li>
       </ul>
     </nav>
 
     <div>
-      <h3>정보 출처</h3>
+      <h3>{t.sourcesTitle}</h3>
       <ul>
         {
           SOURCES.map((s) => (
@@ -52,7 +56,7 @@ import { ATTRACTION, SOURCES, SITE_NAME } from '../config';
 
   <div class="container footer-bottom">
     <span>© {new Date().getFullYear()} {SITE_NAME}</span>
-    <span class="muted small">비공식 여행 가이드 · 강릉시 향토 전통시장</span>
+    <span class="muted small">{t.tagline}</span>
   </div>
 </footer>
 
