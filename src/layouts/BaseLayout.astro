@@ -1,0 +1,82 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import { SITE_NAME, DOMAIN } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  schemas?: Record<string, unknown>[];
+}
+
+const { title, description, schemas = [] } = Astro.props;
+
+const site = Astro.site ?? new URL(`https://${DOMAIN}/`);
+const canonical = new URL(Astro.url.pathname, site).href;
+
+const pageTitle = title ?? SITE_NAME;
+const pageDescription =
+  description ??
+  '강릉 중앙시장(강원특별자치도 강릉시 금성로 21) 비공식 여행 가이드. 영업시간·먹거리(닭강정)·주차·대중교통·실시간 날씨를 한눈에 안내합니다.';
+
+const ogImage = new URL('/brand/og-card.svg', site).href;
+---
+
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/brand/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#174f42" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="alternate" hreflang="ko" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    {
+      schemas.map((s) => (
+        <script type="application/ld+json" set:html={JSON.stringify(s)} />
+      ))
+    }
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <CookieConsent />
+
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>

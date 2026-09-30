@@ -1,0 +1,89 @@
+---
+import { ATTRACTION } from '../config';
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label="강릉중앙시장 가이드 홈">
+      <img src="/icon.svg" width="34" height="34" alt="" />
+      <span>강릉중앙시장 <small>가이드</small></span>
+    </a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#intro">소개</a>
+      <a href="#hours">영업시간</a>
+      <a href="#food">먹거리</a>
+      <a href="#transport">교통·주차</a>
+      <a href="#weather">날씨</a>
+      <a href="#map">지도</a>
+      <a href="#faq">FAQ</a>
+      <a
+        class="nav-map"
+        href={ATTRACTION.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer">지도 열기</a
+      >
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-brand);
+    color: #fff;
+    box-shadow: 0 1px 8px rgba(15, 58, 48, 0.25);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 800;
+    font-size: 1.05rem;
+    text-decoration: none;
+    color: #fff;
+  }
+  .brand small {
+    font-weight: 600;
+    opacity: 0.8;
+    font-size: 0.8rem;
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .nav a {
+    color: #eaf2ef;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.5rem;
+  }
+  .nav a:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+  }
+  .nav-map {
+    background: var(--color-accent);
+    color: #2a1c00 !important;
+  }
+  .nav-map:hover {
+    background: #f0b659 !important;
+  }
+  @media (max-width: 720px) {
+    .nav a:not(.nav-map) {
+      display: none;
+    }
+  }
+</style>

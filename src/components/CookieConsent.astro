@@ -1,0 +1,106 @@
+---
+import { GA4_ID } from '../config';
+---
+
+<div id="cookie-consent" class="cookie-consent" hidden>
+  <p>
+    방문 분석을 위해 Google Analytics 쿠키를 사용합니다. 동의하시면 통계 분석에
+    활용됩니다. (필수 아님)
+  </p>
+  <div class="cookie-actions">
+    <button id="cookie-decline" class="btn-ghost-sm" type="button">거부</button>
+    <button id="cookie-accept" class="btn-primary-sm" type="button">동의</button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ GA4_ID }}>
+  (function () {
+    const KEY = 'gjm_cookie_consent';
+    const box = document.getElementById('cookie-consent');
+    if (!box) return;
+    let stored = null;
+    try {
+      stored = localStorage.getItem(KEY);
+    } catch (e) {}
+    if (stored === 'accepted' || stored === 'declined') {
+      if (stored === 'accepted') loadGtag();
+      return;
+    }
+    box.hidden = false;
+
+    function loadGtag() {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', GA4_ID);
+    }
+
+    document.getElementById('cookie-accept').addEventListener('click', function () {
+      try {
+        localStorage.setItem(KEY, 'accepted');
+      } catch (e) {}
+      box.hidden = true;
+      loadGtag();
+    });
+    document.getElementById('cookie-decline').addEventListener('click', function () {
+      try {
+        localStorage.setItem(KEY, 'declined');
+      } catch (e) {}
+      box.hidden = true;
+    });
+  })();
+</script>
+
+<style>
+  .cookie-consent {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 100;
+    max-width: 40rem;
+    margin-inline: auto;
+    background: #fff;
+    border: 1px solid #e0d8c2;
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgba(15, 58, 48, 0.18);
+    padding: 1rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .cookie-consent p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #36453f;
+    flex: 1 1 16rem;
+  }
+  .cookie-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .btn-primary-sm,
+  .btn-ghost-sm {
+    border: none;
+    cursor: pointer;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .btn-primary-sm {
+    background: var(--color-brand);
+    color: #fff;
+  }
+  .btn-ghost-sm {
+    background: #eef2ef;
+    color: #36453f;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import { HOURS, ATTRACTION } from '../config';
+---
+
+<section id="hours" class="section">
+  <div class="container">
+    <h2 class="section-title">영업시간</h2>
+    <p class="section-lead">
+      검색에서 가장 많이 찾는 정보입니다. 전통시장은 통상 아침부터 밤까지
+      운영하지만, 점포별 영업시간과 휴무는 다를 수 있습니다.
+    </p>
+
+    <div class="hours-grid">
+      <div class="card hours-main">
+        <h3>일반적 운영 시간</h3>
+        <p class="hours-big">{HOURS.daily}</p>
+        <p class="muted small">{HOURS.note}</p>
+      </div>
+      <div class="card hours-tip">
+        <h3>방문 팁</h3>
+        <ul>
+          <li>먹자골목·노점은 저녁 시간대가 가장 활기롭습니다.</li>
+          <li>명절 연휴에는 일부 점포가 쉴 수 있으니 미리 확인하세요.</li>
+          <li>정확한 점포 영업시간은 현장 안내판을 확인하세요.</li>
+        </ul>
+        <a
+          class="btn btn-primary"
+          href={ATTRACTION.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer">지도에서 위치 확인</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hours-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1rem;
+  }
+  .hours-main h3,
+  .hours-tip h3 {
+    margin: 0 0 0.6rem;
+    color: var(--color-brand-dark);
+  }
+  .hours-big {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-brand);
+    margin: 0 0 0.5rem;
+  }
+  .hours-tip ul {
+    margin: 0 0 1rem;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.35rem;
+    color: #36453f;
+  }
+  .muted {
+    color: #6b776f;
+  }
+  .small {
+    font-size: 0.85rem;
+  }
+  @media (max-width: 720px) {
+    .hours-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

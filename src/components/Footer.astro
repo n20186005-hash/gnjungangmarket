@@ -1,0 +1,107 @@
+---
+import { ATTRACTION, SOURCES, SITE_NAME } from '../config';
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>강릉중앙시장</h3>
+      <p class="muted">
+        {ATTRACTION.address.street}<br />
+        전화 <a href={`tel:${ATTRACTION.telephone}`}>{ATTRACTION.telephoneDisplay}</a
+        ><br />
+        구글 평점 {ATTRACTION.rating}점 · {ATTRACTION.reviewCount.toLocaleString()}개 후기
+      </p>
+      <p class="muted small">
+        본 사이트는 비공식 안내 페이지이며, 영업시간·가격·휴무 등은 현장 사정에 따라
+        바뀔 수 있습니다. 방문 전 공식 안내를 확인하세요.
+      </p>
+    </div>
+
+    <nav aria-label="바로가기">
+      <h3>바로가기</h3>
+      <ul>
+        <li><a href="#hours">영업시간</a></li>
+        <li><a href="#food">먹거리(닭강정)</a></li>
+        <li><a href="#transport">교통·주차</a></li>
+        <li><a href="#weather">실시간 날씨</a></li>
+        <li><a href="#faq">자주 묻는 질문</a></li>
+        <li>
+          <a href={ATTRACTION.mapsUrl} target="_blank" rel="noopener noreferrer"
+            >Google 지도에서 보기</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <div>
+      <h3>정보 출처</h3>
+      <ul>
+        {
+          SOURCES.map((s) => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener noreferrer">
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© {new Date().getFullYear()} {SITE_NAME}</span>
+    <span class="muted small">비공식 여행 가이드 · 강릉시 향토 전통시장</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-brand-dark);
+    color: #e8f0ec;
+    padding-block: 2.5rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.75rem;
+  }
+  .site-footer h3 {
+    color: #fff;
+    font-size: 1.05rem;
+    margin: 0 0 0.6rem;
+  }
+  .site-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .site-footer a {
+    color: #cfe2db;
+    text-decoration: none;
+  }
+  .site-footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .muted {
+    color: #a9c2ba;
+  }
+  .small {
+    font-size: 0.85rem;
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.85rem;
+  }
+</style>

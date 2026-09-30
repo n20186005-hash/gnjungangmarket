@@ -1,0 +1,127 @@
+---
+import { ATTRACTION, HOURS } from '../config';
+---
+
+<section id="top" class="hero">
+  <div id="intro" class="container hero-inner">
+    <div class="hero-copy">
+      <span class="tag">강원 강릉 · 전통시장</span>
+      <h1>{ATTRACTION.nameKo} <span class="en">({ATTRACTION.nameEn})</span></h1>
+      <p class="hero-sub">
+        강릉 시내 중심가의 향토 전통시장. 달콤짭짤한 <strong>닭강정</strong>과
+        노상 먹거리 골목, 싱싱한 농수산 특산물로 알려진 지역 명소입니다.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#hours">영업시간 보기</a>
+        <a
+          class="btn btn-ghost"
+          href={ATTRACTION.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer">지도 열기</a
+        >
+      </div>
+    </div>
+
+    <aside class="info-card" aria-label="기본 정보">
+      <h2>기본 정보</h2>
+      <dl>
+        <div>
+          <dt>주소</dt>
+          <dd>{ATTRACTION.address.street}</dd>
+        </div>
+        <div>
+          <dt>전화</dt>
+          <dd><a href={`tel:${ATTRACTION.telephone}`}>{ATTRACTION.telephoneDisplay}</a></dd>
+        </div>
+        <div>
+          <dt>구글 평점</dt>
+          <dd>{ATTRACTION.rating}점 · {ATTRACTION.reviewCount.toLocaleString()}개 후기</dd>
+        </div>
+        <div>
+          <dt>일반적 영업시간</dt>
+          <dd>{HOURS.daily}</dd>
+        </div>
+        <div>
+          <dt>위치</dt>
+          <dd>{ATTRACTION.plusCode}</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-dark) 100%);
+    color: #fff;
+    padding-block: 3rem 3.5rem;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: 2.3rem;
+    font-weight: 900;
+    margin: 0.6rem 0 0.4rem;
+  }
+  .hero h1 .en {
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: #e6f0ec;
+    max-width: 36rem;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .info-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 1rem;
+    padding: 1.2rem 1.3rem;
+    backdrop-filter: blur(4px);
+  }
+  .info-card h2 {
+    font-size: 1rem;
+    margin: 0 0 0.7rem;
+    opacity: 0.9;
+  }
+  .info-card dl {
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .info-card div {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 0.5rem;
+  }
+  .info-card dt {
+    color: #b9d2c9;
+    font-size: 0.85rem;
+  }
+  .info-card dd {
+    margin: 0;
+    font-weight: 600;
+  }
+  .info-card a {
+    color: #fff;
+  }
+  @media (max-width: 820px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+    .hero h1 {
+      font-size: 1.9rem;
+    }
+  }
+</style>

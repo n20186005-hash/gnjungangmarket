@@ -1,0 +1,207 @@
+---
+import { ATTRACTION } from '../config';
+---
+
+<section id="weather" class="section">
+  <div class="container">
+    <h2 class="section-title">실시간 날씨</h2>
+    <p class="section-lead">
+      강릉 중앙시장 인근의 현재 날씨와 7일 예보·방문 조언입니다. 노상 먹거리 골목
+      둘러보기 전에 확인하세요.
+    </p>
+
+    <div id="weather-root" class="weather-root">
+      <div class="card weather-loading">날씨를 불러오는 중…</div>
+    </div>
+
+    <p class="muted small">
+      기상 정보는 동일 출처 API로 제공되며, 예보는 참고용입니다. 실제 방문 시
+      기상특보 등 공식 안내를 확인하세요.
+    </p>
+  </div>
+</section>
+
+<style>
+  .weather-loading {
+    color: #6b776f;
+  }
+  .weather-root {
+    display: grid;
+    gap: 1rem;
+  }
+  .muted {
+    color: #6b776f;
+  }
+  .small {
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+  }
+</style>
+
+<script>
+  import {
+    wmoLabel,
+    kmhToBeaufort,
+    beaufortLabel,
+    uvLabel,
+    buildAdvice,
+    type WeatherPayload,
+  } from '../lib/weather';
+
+  const root = document.getElementById('weather-root');
+  if (root) {
+    const render = (data: WeatherPayload) => {
+      const now = data.current;
+      const cur = wmoLabel(now.weather_code);
+      const advice = buildAdvice(data);
+      const days = (data.daily ?? []).slice(0, 7);
+
+      const adviceHtml = [
+        advice.risk.length
+          ? `<div class="risk-banner"><strong>주의</strong><ul>${advice.risk
+              .map((r) => `<li>${r}</li>`)
+              .join('')}</ul></div>`
+          : '',
+        advice.outfit.length
+          ? `<div class="advice-card"><h4>옷차림</h4><ul>${advice.outfit
+              .map((x) => `<li>${x}</li>`)
+              .join('')}</ul></div>`
+          : '',
+        advice.plan.length
+          ? `<div class="advice-card"><h4>방문 계획</h4><ul>${advice.plan
+              .map((x) => `<li>${x}</li>`)
+              .join('')}</ul></div>`
+          : '',
+        advice.items.length
+          ? `<div class="advice-card"><h4>챙길 물건</h4><ul>${advice.items
+              .map((x) => `<li>${x}</li>`)
+              .join('')}</ul></div>`
+          : '',
+      ].join('');
+
+      const dayHtml = days
+        .map((d, i) => {
+          const w = wmoLabel(d.weather_code);
+          const label = i === 0 ? '오늘' : '+' + i + '일';
+          return `<div class="day">
+            <span class="day-name">${label}</span>
+            <span class="day-icon">${w.icon}</span>
+            <span class="day-label">${w.label}</span>
+            <span class="day-temp">${Math.round(d.temperature_2m_min)}° / ${Math.round(
+            d.temperature_2m_max
+          )}°</span>
+            <span class="day-meta">강수 ${d.precipitation_probability_max}% · 바람 ${beaufortLabel(
+            d.wind_speed_10m_max
+          )}(${kmhToBeaufort(d.wind_speed_10m_max)})) · 자외선 ${uvLabel(
+            d.uv_index_max
+          )}</span>
+          </div>`;
+        })
+        .join('');
+
+      root.innerHTML = `
+        <div class="card current">
+          <div class="current-main">
+            <span class="current-icon">${cur.icon}</span>
+            <div>
+              <div class="current-temp">${Math.round(now.temperature_2m)}°C</div>
+              <div class="current-label">${cur.label}</div>
+            </div>
+          </div>
+          <ul class="current-meta">
+            <li>체감 ${Math.round(now.apparent_temperature)}°C</li>
+            <li>습도 ${now.relative_humidity_2m}%</li>
+            <li>바람 ${beaufortLabel(now.wind_speed_10m)} (${Math.round(
+        now.wind_speed_10m
+      )} km/h)</li>
+            <li>강수 ${now.precipitation} mm</li>
+          </ul>
+        </div>
+        ${adviceHtml}
+        <div class="forecast">${dayHtml}</div>
+      `;
+    };
+
+    const fallback = () => {
+      root.innerHTML = `<div class="card">현재 날씨를 일시적으로 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.</div>`;
+    };
+
+    fetch('/api/weather')
+      .then((r) => {
+        if (!r.ok) throw new Error('bad');
+        return r.json();
+      })
+      .then((d) => render(d as WeatherPayload))
+      .catch(() => fallback());
+  }
+</script>
+
+<style>
+  .current {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .current-main {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .current-icon {
+    font-size: 2.6rem;
+  }
+  .current-temp {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-brand-dark);
+  }
+  .current-meta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.25rem;
+    color: #54625c;
+    font-size: 0.92rem;
+  }
+  .forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.6rem;
+  }
+  .day {
+    background: #fff;
+    border: 1px solid #e7e0cf;
+    border-radius: 0.75rem;
+    padding: 0.7rem;
+    display: grid;
+    gap: 0.2rem;
+    text-align: center;
+  }
+  .day-name {
+    font-weight: 700;
+    color: var(--color-brand);
+  }
+  .day-icon {
+    font-size: 1.6rem;
+  }
+  .day-temp {
+    font-weight: 700;
+  }
+  .day-meta {
+    font-size: 0.75rem;
+    color: #6b776f;
+  }
+  .risk-banner ul,
+  .advice-card ul {
+    margin: 0.4rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .advice-card h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-brand-dark);
+  }
+</style>

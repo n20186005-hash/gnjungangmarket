@@ -1,0 +1,73 @@
+---
+const foods = [
+  {
+    name: '닭강정',
+    en: 'Dakgangjeong',
+    desc: '강릉 중앙시장을 대표하는 메뉴. 바삭한 닭튀김에 달콤짭짤한 양념을 버무린 길거리 간식으로, 먹자골목 여러 점포에서 만날 수 있습니다.',
+  },
+  {
+    name: '어묵고로케',
+    en: 'Odeng Croquette',
+    desc: '어묵이 들어간 고소한 고로케. 시장 산책 중 가볍게 즐기기 좋은 따뜻한 간식입니다.',
+  },
+  {
+    name: '호떡·붕어빵',
+    en: 'Hotteok · Bungeoppang',
+    desc: '겨울철 노점에서 자주 볼 수 있는 전통 디저트. 갓 구운 따뜻한 간식이 인기입니다.',
+  },
+  {
+    name: '떡볶이·순대·칼국수',
+    en: 'Tteokbokki · Sundae · Kalguksu',
+    desc: '시장 식당가와 포장마차에서 즐기는 서민 음식. 눈치 볼 것 없이 혼자서도 들르기 좋은 메뉴들입니다.',
+  },
+  {
+    name: '농수산 특산물',
+    en: 'Local Produce & Seafood',
+    desc: '강릉 인근 산물과 동해 산 seafood, 곤달비·오징어 등 지역 특산물을 살 수 있는 코너가 있습니다.',
+  },
+];
+---
+
+<section id="food" class="section">
+  <div class="container">
+    <h2 class="section-title">먹거리</h2>
+    <p class="section-lead">
+      강릉 중앙시장을 찾는 이유이자 하이라이트. 대표 메뉴와 시장 먹자 코너를
+      정리했습니다. (가격·메뉴는 점포마다 다릅니다.)
+    </p>
+    <div class="food-grid">
+      {
+        foods.map((f) => (
+          <article class="card food-card">
+            <h3>{f.name}</h3>
+            <span class="food-en">{f.en}</span>
+            <p>{f.desc}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.9rem;
+  }
+  .food-card h3 {
+    margin: 0 0 0.2rem;
+    color: var(--color-brand-dark);
+    font-size: 1.1rem;
+  }
+  .food-en {
+    font-size: 0.8rem;
+    color: #8a958e;
+    font-weight: 700;
+  }
+  .food-card p {
+    margin: 0.6rem 0 0;
+    color: #36453f;
+    font-size: 0.95rem;
+  }
+</style>

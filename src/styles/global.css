@@ -1,54 +1,129 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  --color-brand: #174f42;
+  --color-brand-dark: #0f3a30;
+  --color-brand-light: #2f7a66;
+  --color-cream: #f4eedf;
+  --color-accent: #e0a13c;
+  --color-ink: #1f2a26;
+  --font-sans: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui,
+    sans-serif;
+}
 
 :root {
-  --paper: #f4eedf;
-  --paper-deep: #e9ddc7;
-  --ink: #1c2824;
-  --pine: #174f42;
-  --pine-dark: #0e382f;
-  --chili: #c94a36;
-  --mustard: #e3ac3b;
-  --sea: #5e9d98;
-  --cream: #fffaf0;
-  --line: rgba(28, 40, 36, .18);
-  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
-  color: var(--ink);
-  background: var(--paper);
-  font-synthesis: none;
+  color-scheme: light;
 }
 
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); overflow-x: hidden; }
-::selection { background: var(--mustard); color: var(--ink); }
-a { color: inherit; }
-img { display: block; max-width: 100%; }
-
-.market-grid {
-  background-image:
-    linear-gradient(rgba(28,40,36,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28,40,36,.045) 1px, transparent 1px);
-  background-size: 32px 32px;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
-.awning {
-  background: repeating-linear-gradient(90deg, var(--pine) 0 28px, var(--cream) 28px 56px, var(--chili) 56px 84px, var(--cream) 84px 112px);
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
-.torn {
-  clip-path: polygon(0 0,100% 0,100% 96%,97% 100%,94% 96%,91% 100%,88% 96%,85% 100%,82% 96%,79% 100%,76% 96%,73% 100%,70% 96%,67% 100%,64% 96%,61% 100%,58% 96%,55% 100%,52% 96%,49% 100%,46% 96%,43% 100%,40% 96%,37% 100%,34% 96%,31% 100%,28% 96%,25% 100%,22% 96%,19% 100%,16% 96%,13% 100%,10% 96%,7% 100%,4% 96%,0 100%);
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-.stamp { transform: rotate(-2deg); border: 2px solid currentColor; box-shadow: inset 0 0 0 3px var(--paper); }
-.ticket { border: 1px solid var(--line); background: var(--cream); box-shadow: 8px 8px 0 rgba(23,79,66,.1); }
-.ticket::before, .ticket::after { content:""; position:absolute; width:18px; height:18px; border-radius:50%; background:var(--paper); top:50%; transform:translateY(-50%); }
-.ticket::before { left:-10px; } .ticket::after { right:-10px; }
+a {
+  color: inherit;
+}
 
-.photo-frame { border: 10px solid var(--cream); box-shadow: 0 20px 50px rgba(28,40,36,.22); }
-.section-kicker { letter-spacing: .18em; text-transform: uppercase; font-size: .72rem; font-weight: 800; color: var(--chili); }
-.market-title { font-weight: 900; letter-spacing: -.055em; line-height: .95; }
-.vertical-label { writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: .12em; }
+.container {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.section {
+  padding-block: 3.5rem;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-brand-dark);
+  margin-bottom: 0.25rem;
+}
+
+.section-lead {
+  color: #54625c;
+  margin-bottom: 1.75rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e7e0cf;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 58, 48, 0.05);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--color-brand-dark);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #eaf2ef;
+  color: var(--color-brand);
+}
+
+.risk-banner {
+  background: #fdecec;
+  border: 1px solid #f5b5b5;
+  color: #9b1c1c;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+
+.advice-card {
+  border-radius: 0.85rem;
+  padding: 1rem;
+  background: #f7faf8;
+  border: 1px solid #e7e0cf;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * { animation: none !important; transition: none !important; }
+  html {
+    scroll-behavior: auto;
+  }
 }

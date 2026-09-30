@@ -1,0 +1,58 @@
+---
+import { FAQ_KO } from '../lib/faq';
+---
+
+<section id="faq" class="section">
+  <div class="container">
+    <h2 class="section-title">자주 묻는 질문</h2>
+    <p class="section-lead">
+      영업시간·주차·교통 등 방문 전 자주 묻는 질문을 모았습니다.
+    </p>
+    <div class="faq-list">
+      {
+        FAQ_KO.map((item) => (
+          <details class="faq-item">
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-list {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .faq-item {
+    background: #fff;
+    border: 1px solid #e7e0cf;
+    border-radius: 0.75rem;
+    padding: 0.2rem 1.1rem;
+  }
+  .faq-item summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-brand-dark);
+    padding: 0.85rem 0;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::after {
+    content: '+';
+    float: right;
+    font-weight: 800;
+    color: var(--color-brand);
+  }
+  .faq-item[open] summary::after {
+    content: '–';
+  }
+  .faq-item p {
+    margin: 0 0 0.9rem;
+    color: #36453f;
+  }
+</style>
